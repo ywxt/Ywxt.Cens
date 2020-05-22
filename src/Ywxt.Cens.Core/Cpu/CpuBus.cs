@@ -5,6 +5,9 @@ namespace Ywxt.Cens.Core.Cpu
 {
     public class CpuBus : IBus
     {
+        public const ushort AddressStackStart = 0x0100;
+        public const ushort AddressStackEnd = 0x0200 - 1;
+
         public const ushort AddressCpuRamEnd = 0x1FFF;
 
         public const ushort AddressIoRegistersStart = 0x2000;
