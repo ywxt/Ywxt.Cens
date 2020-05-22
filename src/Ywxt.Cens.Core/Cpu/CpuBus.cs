@@ -16,11 +16,19 @@ namespace Ywxt.Cens.Core.Cpu
         public Memory<byte> Ram { get; }
 
 
+        public CpuBus(Cartridge cartridge)
+        {
+            Cartridge = cartridge;
+            Ram = new Memory<byte>(new byte[0x0800]);
+        }
+
+
         public byte ReadByte(ushort address)
         {
             if (address <= AddressCpuRamEnd)
             {
-                return Ram.Span[address];
+                // 镜像
+                return Ram.Span[address & 0x07FF];
             }
 
             // IO 寄存器，暂不处理
@@ -37,7 +45,7 @@ namespace Ywxt.Cens.Core.Cpu
         {
             if (address <= AddressCpuRamEnd)
             {
-                Ram.Span[address] = data;
+                Ram.Span[address & 0x07FF] = data;
             }
 
             // IO 寄存器，暂不处理
