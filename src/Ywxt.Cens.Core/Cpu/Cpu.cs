@@ -13,11 +13,14 @@ namespace Ywxt.Cens.Core.Cpu
 
         public Registers Registers { get; } = new Registers();
 
+        public IStack Stack { get; }
+
         public IBus Bus { get; }
 
         public Cpu(Cartridge cartridge)
         {
             Bus = new CpuBus(cartridge);
+            Stack = new Stack(Bus, Registers);
         }
 
         public void Clock()
@@ -44,7 +47,11 @@ namespace Ywxt.Cens.Core.Cpu
 
         public void Nmi()
         {
-            throw new System.NotImplementedException();
+            Stack.PushWord(Registers.Pc);
+            Stack.PushByte((byte) ((Registers.P | PFlags.U) & ~PFlags.B));
+            Registers.P |= PFlags.I;
+            Registers.Pc = Bus.ReadWord(NmiVector);
+            _deferCycles += 7;
         }
 
         public void Irq()
@@ -53,32 +60,12 @@ namespace Ywxt.Cens.Core.Cpu
             {
                 return;
             }
-        }
 
-        public void PushByte(byte data)
-        {
-            Registers.Sp--;
-            Bus.WriteByte((ushort) (CpuBus.AddressStackStart + Registers.Sp), data);
-        }
-
-        public void PushWord(ushort data)
-        {
-            Registers.Sp -= 2;
-            Bus.WriteWord((ushort) (CpuBus.AddressStackStart + Registers.Sp), data);
-        }
-
-        public byte PopByte()
-        {
-            var data = Bus.ReadByte((ushort) (CpuBus.AddressStackStart + Registers.Sp));
-            Registers.Sp++;
-            return data;
-        }
-
-        public ushort PopWord()
-        {
-            var data = Bus.ReadWord((ushort) (CpuBus.AddressStackStart + Registers.Sp));
-            Registers.Sp += 2;
-            return data;
+            Stack.PushWord(Registers.Pc);
+            Stack.PushByte((byte) ((Registers.P | PFlags.U) & ~PFlags.B));
+            Registers.P |= PFlags.I;
+            Registers.Pc = Bus.ReadWord(IrqOrBrkVector);
+            _deferCycles += 7;
         }
 
 

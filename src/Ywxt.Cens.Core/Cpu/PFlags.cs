@@ -8,35 +8,38 @@ namespace Ywxt.Cens.Core.Cpu
         /// <summary>
         /// 进位标志
         /// </summary>
-        C = 0b0000_00000,
+        C = 1,
 
         /// <summary>
         /// 零标志，计算结果为0
         /// </summary>
-        Z = 0b0000_0010,
+        Z = 1 << 1,
 
         /// <summary>
         /// 中断使能，屏蔽IRQ中断
         /// </summary>
-        I = 0b0000_0100,
+        I = 1 << 2,
 
         /// <summary>
         /// 十进制标志，未使用
         /// </summary>
-        D = 0b0000_1000,
+        D = 1 << 3,
 
-        B = 0b0001_0000,
+        B = 1 << 4,
+
         /// <summary>
         /// 未使用，为1
         /// </summary>
-        U = 0b0010_0000,
+        U = 1 << 5,
+
         /// <summary>
         /// 溢出标志
         /// </summary>
-        V = 0b0100_0000,
+        V = 1 << 6,
+
         /// <summary>
         /// 负标志
         /// </summary>
-        N = 0b1000_0000,
+        N = 1 << 7,
     }
 }
