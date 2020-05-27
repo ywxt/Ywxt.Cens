@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ywxt.Cens.Core", "Ywxt.Cens.Core\Ywxt.Cens.Core.csproj", "{00F0015F-D8D6-4C8F-9880-1512C4B62825}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ywxt.Cens.Core.Test", "Ywxt.Cens.Core.Test\Ywxt.Cens.Core.Test.csproj", "{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{00F0015F-D8D6-4C8F-9880-1512C4B62825}.Release|x64.Build.0 = Release|Any CPU
 		{00F0015F-D8D6-4C8F-9880-1512C4B62825}.Release|x86.ActiveCfg = Release|Any CPU
 		{00F0015F-D8D6-4C8F-9880-1512C4B62825}.Release|x86.Build.0 = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|x64.Build.0 = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Debug|x86.Build.0 = Debug|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|x64.Build.0 = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F1E28EAC-99E7-489F-AA64-1C4F1B23CD8F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

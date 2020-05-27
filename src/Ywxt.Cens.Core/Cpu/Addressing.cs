@@ -2,6 +2,7 @@ namespace Ywxt.Cens.Core.Cpu
 {
     public class ImplicitAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -14,6 +15,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class AccumulatorAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -26,6 +28,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class ImmediateAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -38,6 +41,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class AbsoluteAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -46,12 +50,11 @@ namespace Ywxt.Cens.Core.Cpu
             return address;
         }
 
-        
-
     }
 
     public class AbsoluteXAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -64,6 +67,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class AbsoluteYAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -76,6 +80,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class ZeroPageAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -88,6 +93,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class ZeroPageXAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -100,6 +106,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class ZeroPageYAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -113,6 +120,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class RelativeAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -126,6 +134,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class IndirectAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -141,6 +150,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class IndirectXAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
@@ -152,6 +162,7 @@ namespace Ywxt.Cens.Core.Cpu
 
     public class IndirectYAddressing : IAddressing
     {
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {

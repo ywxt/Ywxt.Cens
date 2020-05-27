@@ -8,7 +8,9 @@ namespace Ywxt.Cens.Core.Cpu
         private const ushort NmiVector = 0xFFFA;
         private const ushort ResetVector = 0xFFFC;
         private const ushort IrqOrBrkVector = 0xFFFE;
-
+        
+        private IInstructionProcessor _processor = new InstructionProcessor();
+        
         private int _deferCycles = 0;
 
         public Registers Registers { get; } = new Registers();
@@ -71,6 +73,9 @@ namespace Ywxt.Cens.Core.Cpu
 
         private void Step()
         {
+            var op = Bus.ReadByte(Registers.Pc++);
+            var cycle = _processor.Process(this, op);
+            _deferCycles += cycle;
         }
     }
 }
