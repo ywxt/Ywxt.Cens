@@ -30,7 +30,6 @@ namespace Ywxt.Cens.Core.Cpu
             if (_deferCycles == 0)
             {
                 Step();
-                return;
             }
 
             _deferCycles--;
@@ -41,8 +40,8 @@ namespace Ywxt.Cens.Core.Cpu
             Registers.A = 0;
             Registers.X = 0;
             Registers.Y = 0;
-            Registers.P = 0;
-            Registers.Sp = 0xFF;
+            Registers.P = PFlags.U | PFlags.I;
+            Registers.Sp = 0xFD;
             Registers.Pc = Bus.ReadWord(ResetVector);
             _deferCycles = 8;
         }

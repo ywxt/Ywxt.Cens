@@ -49,6 +49,7 @@ namespace Ywxt.Cens.Core.Cpu
             if (address <= AddressCpuRamEnd)
             {
                 Ram.Span[address & 0x07FF] = data;
+                return;
             }
 
             // IO 寄存器，暂不处理
