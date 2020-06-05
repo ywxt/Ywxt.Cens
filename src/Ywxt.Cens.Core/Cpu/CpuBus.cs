@@ -3,7 +3,7 @@ using Ywxt.Cens.Core.Rom;
 
 namespace Ywxt.Cens.Core.Cpu
 {
-    public class CpuBus : IBus
+    public sealed class CpuBus : IBus
     {
         public const ushort AddressStackStart = 0x0100;
         public const ushort AddressStackEnd = 0x0200 - 1;

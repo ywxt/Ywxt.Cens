@@ -1,4 +1,4 @@
-namespace Ywxt.Cens.Core.Cpu
+namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public interface IInstructionProcessor
     {

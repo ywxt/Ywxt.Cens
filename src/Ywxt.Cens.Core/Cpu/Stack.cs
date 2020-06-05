@@ -1,6 +1,6 @@
 namespace Ywxt.Cens.Core.Cpu
 {
-    public class Stack : IStack
+    public sealed class Stack : IStack
     {
         private readonly IBus _bus;
         private readonly Registers _registers;

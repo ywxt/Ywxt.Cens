@@ -1,17 +1,22 @@
 using System;
+using Ywxt.Cens.Core.Cpu.Instruction;
 using Ywxt.Cens.Core.Rom;
 
 namespace Ywxt.Cens.Core.Cpu
 {
-    public class Cpu : ICpu
+    public sealed class Cpu : ICpu
     {
         private const ushort NmiVector = 0xFFFA;
         private const ushort ResetVector = 0xFFFC;
         private const ushort IrqOrBrkVector = 0xFFFE;
         
-        private IInstructionProcessor _processor = new InstructionProcessor();
+        private readonly IInstructionProcessor _processor = new InstructionProcessor();
         
         private int _deferCycles = 0;
+        private int _cycles = 0;
+
+        public event Action<Registers,IStack,int>? StepBeforeEvent;
+        
 
         public Registers Registers { get; } = new Registers();
 
@@ -29,9 +34,12 @@ namespace Ywxt.Cens.Core.Cpu
         {
             if (_deferCycles == 0)
             {
+                OnStepBeforeEvent(Registers,Stack,_cycles);
                 Step();
+                
             }
 
+            _cycles++;
             _deferCycles--;
         }
 
@@ -43,7 +51,7 @@ namespace Ywxt.Cens.Core.Cpu
             Registers.P = PFlags.U | PFlags.I;
             Registers.Sp = 0xFD;
             Registers.Pc = Bus.ReadWord(ResetVector);
-            _deferCycles = 8;
+            _deferCycles = 7;
         }
 
         public void Nmi()
@@ -75,6 +83,11 @@ namespace Ywxt.Cens.Core.Cpu
             var op = Bus.ReadByte(Registers.Pc++);
             var cycle = _processor.Process(this, op);
             _deferCycles += cycle;
+        }
+
+        private void OnStepBeforeEvent(Registers registers, IStack stack, int cycles)
+        {
+            StepBeforeEvent?.Invoke(registers, stack, cycles);
         }
     }
 }

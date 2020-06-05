@@ -2,7 +2,7 @@
 
 namespace Ywxt.Cens.Core.Rom
 {
-    public class Mapper0 : IMapper
+    public sealed class Mapper0 : IMapper
     {
         public const ushort AddressChrBankEnd = 0x2000 - 1;
         public const ushort AddressExpansionRomStart = 0x4020;

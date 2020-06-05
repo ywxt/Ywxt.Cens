@@ -5,7 +5,7 @@ namespace Ywxt.Cens.Core.Rom
     /// <summary>
     /// 卡带
     /// </summary>
-    public class Cartridge
+    public sealed class Cartridge
     {
         public IMapper Mapper { get;}
 

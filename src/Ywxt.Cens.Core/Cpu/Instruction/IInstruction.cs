@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-namespace Ywxt.Cens.Core.Cpu
+namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public interface IInstruction
     {

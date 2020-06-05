@@ -3,7 +3,7 @@ using Ywxt.Cens.Core.Exceptions;
 
 namespace Ywxt.Cens.Core.Rom
 {
-    public class MapperFactory
+    public sealed class MapperFactory
     {
         private MapperFactory()
         {

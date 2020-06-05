@@ -14,13 +14,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ywxt.Cens.Core\Ywxt.Cens.Core.csproj" />
+        <ProjectReference Include="..\Ywxt.Cens.Core\Ywxt.Cens.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="nestest.nes">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="nestest.nes">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="nestext.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

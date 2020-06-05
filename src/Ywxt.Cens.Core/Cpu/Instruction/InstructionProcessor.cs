@@ -1,6 +1,6 @@
-namespace Ywxt.Cens.Core.Cpu
+namespace Ywxt.Cens.Core.Cpu.Instruction
 {
-    public class InstructionProcessor : IInstructionProcessor
+    public sealed class InstructionProcessor : IInstructionProcessor
     {
         public int Process(ICpu cpu, byte instruction)
         {
