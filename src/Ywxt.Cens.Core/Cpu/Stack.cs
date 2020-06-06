@@ -14,14 +14,15 @@ namespace Ywxt.Cens.Core.Cpu
 
         public void PushByte(byte data)
         {
-            _bus.WriteByte((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
             _registers.Sp--;
+            _bus.WriteByte((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
+            
         }
 
         public void PushWord(ushort data)
         {
-            _bus.WriteWord((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
             _registers.Sp -= 2;
+            _bus.WriteWord((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
         }
 
         public byte PopByte()

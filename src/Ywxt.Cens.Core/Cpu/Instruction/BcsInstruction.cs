@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -18,23 +19,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             {
                 cpu.Registers.Pc = data;
             }
-
-            var cycle = 0;
-            // 跳转成功
-            if (jmpSuccess)
-            {
-                cycle += 1;
-            }
-
-            // 跨页访问
-            if ((oldAddress & 0xFF00) != (cpu.Registers.Pc & 0xFF00))
-            {
-                cycle += 1;
-            }
+            
 
             return instruction switch
             {
-                0xB0 => 2 + cycle,
+                0xB0 => 2 + BranchInstructionUtil.GetClockCycleIncrement(jmpSuccess, oldAddress, cpu.Registers.Pc),
                 _ => 0
             };
         }

@@ -12,7 +12,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort data)
         {
-            cpu.Stack.PushWord((ushort) (cpu.Registers.Pc - 1));
+            cpu.Stack.PushWord(cpu.Registers.Pc);
             cpu.Registers.Pc = data;
             return instruction switch
             {

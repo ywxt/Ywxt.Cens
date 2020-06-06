@@ -3,27 +3,26 @@ using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
-    public sealed  class BneInstruction : IInstruction
+    public sealed class BvsInstruction : IInstruction
     {
         public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
             = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
             {
-                {0xD0, (AddressingType.Address, AddressingMode.RelativeAddressingMode)}
+                {0x70, (AddressingType.Address, AddressingMode.RelativeAddressingMode)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort data)
         {
             var oldAddress = cpu.Registers.Pc;
-            var jmpSuccess = !cpu.Registers.P.HasFlag(PFlags.Z);
+            var jmpSuccess = cpu.Registers.P.HasFlag(PFlags.V);
             if (jmpSuccess)
             {
                 cpu.Registers.Pc = data;
             }
             
-
             return instruction switch
             {
-                0xD0 => 2 + BranchInstructionUtil.GetClockCycleIncrement(jmpSuccess, oldAddress, cpu.Registers.Pc),
+                0x70 => 2 + BranchInstructionUtil.GetClockCycleIncrement(jmpSuccess, oldAddress, cpu.Registers.Pc),
                 _ => 0
             };
         }

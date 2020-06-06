@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -13,23 +14,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort data)
         {
             cpu.Registers.X = (byte) data;
-            if (cpu.Registers.X == 0)
-            {
-                cpu.Registers.P |= PFlags.Z;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.Z;
-            }
-
-            if (cpu.Registers.X >> 7 == 1)
-            {
-                cpu.Registers.P |= PFlags.N;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.N;
-            }
+            cpu.Registers.SetZAndN(cpu.Registers.X);
 
             return instruction switch
             {

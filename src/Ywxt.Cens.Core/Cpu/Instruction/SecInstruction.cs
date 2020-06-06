@@ -7,7 +7,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
             = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
             {
-                {0x38, (AddressingType.Address, AddressingMode.ImplicitAddressingMode)}
+                {0x38, (AddressingType.Data, AddressingMode.ImplicitAddressingMode)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort data)
