@@ -3,23 +3,24 @@ using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
-    public sealed class AdcInstruction : IInstruction
+    public sealed class SbcInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode > OpCodes { get; }
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x69, AddressingMode.ImmediateAddressingMode}
+                {0xE9, AddressingMode.ImmediateAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
+        public AddressingType AddressingType { get; }= AddressingType.Data;
 
         public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
-            var result = cpu.Registers.A + (byte) data + (byte) (cpu.Registers.P & PFlags.C);
+            var result = unchecked(cpu.Registers.A - (byte) data - 1 + (byte) (cpu.Registers.P & PFlags.C));
             var af = cpu.Registers.A >> 7;
             var bf = (byte) data >> 7;
             var cf = (result >> 7) & 1;
-            if (af == bf && af != cf)
+            //判断溢出
+            if ((af==1 && cf==0) | (af ==0 && bf==1 && cf==1))
             {
                 cpu.Registers.P |= PFlags.V;
             }
@@ -28,7 +29,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 cpu.Registers.P &= ~PFlags.V;
             }
 
-            if (((result >> 8) & 1) == 1)
+            if (((result >> 8) & 1) != 1)
             {
                 cpu.Registers.P |= PFlags.C;
             }
@@ -41,7 +42,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Registers.SetZAndN(cpu.Registers.A);
             return instruction switch
             {
-                0x69 => 2,
+                0xE9 => 2,
                 _ => 0
             };
         }

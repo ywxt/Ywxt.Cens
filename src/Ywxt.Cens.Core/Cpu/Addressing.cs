@@ -58,7 +58,9 @@ namespace Ywxt.Cens.Core.Cpu
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
-            return (ushort) (cpuBus.ReadWord(registers.Pc++) + registers.X);
+            var address = registers.Pc;
+            registers.Pc += 2;
+            return (ushort) (cpuBus.ReadWord(address) + registers.X);
         }
 
         
@@ -71,7 +73,9 @@ namespace Ywxt.Cens.Core.Cpu
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
-            return (ushort) (cpuBus.ReadWord(registers.Pc++) + registers.Y);
+            var address = registers.Pc;
+            registers.Pc += 2;
+            return (ushort) (cpuBus.ReadWord(address) + registers.Y);
         }
 
         

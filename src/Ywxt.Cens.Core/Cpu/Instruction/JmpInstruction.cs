@@ -4,14 +4,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class JmpInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0x4C, (AddressingType.Address, AddressingMode.AbsoluteAddressingMode)},
-                {0x6C, (AddressingType.Address, AddressingMode.IndirectAddressingMode)},
+                {0x4C,  AddressingMode.AbsoluteAddressingMode},
+                {0x6C, AddressingMode.IndirectAddressingMode},
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public AddressingType AddressingType { get; }= AddressingType.Address;
+
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
             cpu.Registers.Pc = data;
             return instruction switch

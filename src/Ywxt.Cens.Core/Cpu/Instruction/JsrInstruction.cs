@@ -4,13 +4,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class JsrInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0x20, (AddressingType.Address, AddressingMode.AbsoluteAddressingMode)}
+                {0x20,  AddressingMode.AbsoluteAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public AddressingType AddressingType { get; }= AddressingType.Address;
+
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
             cpu.Stack.PushWord(cpu.Registers.Pc);
             cpu.Registers.Pc = data;

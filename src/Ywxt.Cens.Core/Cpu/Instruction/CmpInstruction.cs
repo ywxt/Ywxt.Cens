@@ -5,13 +5,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class CmpInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType, AddressingMode)>
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0xC9, (AddressingType.Data, AddressingMode.ImmediateAddressingMode)}
+                {0xC9, AddressingMode.ImmediateAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public AddressingType AddressingType { get; } = AddressingType.Data;
+
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
             var result = cpu.Registers.A - (byte) data;
             cpu.Registers.SetZAndN(unchecked((byte) result));

@@ -4,15 +4,17 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class BitInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0x24, (AddressingType.Address, AddressingMode.ZeroPageAddressingMode)},
+                {0x24, AddressingMode.ZeroPageAddressingMode},
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public AddressingType AddressingType { get; } = AddressingType.Data;
+
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
-            var value = cpu.Bus.ReadByte(data);
+            var value = (byte) data;
             if ((value & 0b10000000) >> 7 == 1)
             {
                 cpu.Registers.P |= PFlags.N;

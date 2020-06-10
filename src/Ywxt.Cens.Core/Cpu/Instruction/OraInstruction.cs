@@ -5,13 +5,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class OraInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0x09, (AddressingType.Data, AddressingMode.ImmediateAddressingMode)}
+                {0x09, AddressingMode.ImmediateAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public AddressingType AddressingType { get; }= AddressingType.Data;
+
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
             cpu.Registers.A = (byte) (cpu.Registers.A | (byte) data);
             cpu.Registers.SetZAndN(cpu.Registers.A);

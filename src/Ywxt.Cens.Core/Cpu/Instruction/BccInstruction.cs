@@ -5,13 +5,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class BccInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, (AddressingType addrType, AddressingMode addrMode)> OpCodes { get; }
-            = new Dictionary<byte, (AddressingType addrType, AddressingMode addrMode)>
+        public AddressingType AddressingType { get; } = AddressingType.Address;
+
+        IReadOnlyDictionary<byte, AddressingMode> IInstruction.OpCodes { get; }
+            = new Dictionary<byte, AddressingMode>
             {
-                {0xF0, (AddressingType.Address, AddressingMode.RelativeAddressingMode)}
+                {0xF0, AddressingMode.RelativeAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data)
+        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
             var oldAddress = cpu.Registers.Pc;
             var jmpSuccess = cpu.Registers.P.HasFlag(PFlags.Z);
@@ -19,7 +21,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             {
                 cpu.Registers.Pc = data;
             }
-            
+
 
             return instruction switch
             {
