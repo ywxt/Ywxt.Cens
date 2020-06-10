@@ -10,12 +10,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             {
                 {0xA2, AddressingMode.ImmediateAddressingMode},
                 {0xAE, AddressingMode.AbsoluteAddressingMode},
-                {0xA6,  AddressingMode.ZeroPageAddressingMode},
-                {0xB6,  AddressingMode.ZeroPageYAddressingMode},
-                {0xBE,  AddressingMode.AbsoluteYAddressingMode}
+                {0xA6, AddressingMode.ZeroPageAddressingMode},
+                {0xB6, AddressingMode.ZeroPageYAddressingMode},
+                {0xBE, AddressingMode.AbsoluteYAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
         public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {

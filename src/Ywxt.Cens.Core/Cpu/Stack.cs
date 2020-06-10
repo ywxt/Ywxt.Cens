@@ -14,29 +14,31 @@ namespace Ywxt.Cens.Core.Cpu
 
         public void PushByte(byte data)
         {
-            _registers.Sp--;
             _bus.WriteByte((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
-            
+            _registers.Sp--;
         }
 
         public void PushWord(ushort data)
         {
-            _registers.Sp -= 2;
-            _bus.WriteWord((ushort) (CpuBus.AddressStackStart + _registers.Sp), data);
+            var low = (byte) (data & 0x00FF);
+            var high = (byte) ((data & 0xFF00) >> 8);
+            PushByte(high);
+            PushByte(low);
+            
         }
 
         public byte PopByte()
         {
-            var data = _bus.ReadByte((ushort) (CpuBus.AddressStackStart + _registers.Sp));
             _registers.Sp++;
+            var data = _bus.ReadByte((ushort) (CpuBus.AddressStackStart + _registers.Sp));
             return data;
         }
 
         public ushort PopWord()
         {
-            var data = _bus.ReadWord((ushort) (CpuBus.AddressStackStart + _registers.Sp));
-            _registers.Sp += 2;
-            return data;
+            var low = PopByte();
+            var high = PopByte();
+            return (ushort) ((high << 8) + low);
         }
     }
 }

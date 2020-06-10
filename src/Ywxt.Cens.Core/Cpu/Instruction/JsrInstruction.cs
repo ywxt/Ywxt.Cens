@@ -14,7 +14,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
         {
-            cpu.Stack.PushWord(cpu.Registers.Pc);
+            cpu.Stack.PushWord((ushort)(cpu.Registers.Pc - 1));
             cpu.Registers.Pc = data;
             return instruction switch
             {
