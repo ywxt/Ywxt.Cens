@@ -4,7 +4,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public interface IInstruction
     {
-        public IReadOnlyDictionary<byte,  AddressingMode> OpCodes { get; }
+        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
         public AddressingType AddressingType { get; }
 
         /// <summary>
@@ -12,9 +12,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         /// </summary>
         /// <param name="cpu"></param>
         /// <param name="instruction"></param>
+        /// <param name="address"></param>
         /// <param name="data"></param>
         /// <param name="pageCrossed"></param>
         /// <returns></returns>
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed);
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed);
     }
 }

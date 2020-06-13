@@ -6,16 +6,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
     public sealed class EorInstruction : IInstruction
     {
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-         = new Dictionary<byte, AddressingMode>
-         {
-             {0x49,AddressingMode.ImmediateAddressingMode}
-         };
+            = new Dictionary<byte, AddressingMode>
+            {
+                {0x49, AddressingMode.ImmediateAddressingMode}
+            };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
-            cpu.Registers.A = (byte) (cpu.Registers.A ^ (byte) data);
+            cpu.Registers.A = (byte) (cpu.Registers.A ^ data);
             cpu.Registers.SetZAndN(cpu.Registers.A);
             return instruction switch
             {

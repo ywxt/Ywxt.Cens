@@ -11,15 +11,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x50, AddressingMode.RelativeAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Address;
+        public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             var oldAddress = cpu.Registers.Pc;
             var jmpSuccess = !cpu.Registers.P.HasFlag(PFlags.V);
             if (jmpSuccess)
             {
-                cpu.Registers.Pc = data;
+                cpu.Registers.Pc = address;
             }
 
 

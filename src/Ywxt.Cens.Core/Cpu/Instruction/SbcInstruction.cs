@@ -11,16 +11,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xE9, AddressingMode.ImmediateAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
-            var result = unchecked(cpu.Registers.A - (byte) data - 1 + (byte) (cpu.Registers.P & PFlags.C));
+            var result = unchecked(cpu.Registers.A - data - 1 + (byte) (cpu.Registers.P & PFlags.C));
             var af = cpu.Registers.A >> 7;
-            var bf = (byte) data >> 7;
+            var bf = data >> 7;
             var cf = (result >> 7) & 1;
             //判断溢出
-            if ((af==1 && cf==0) | (af ==0 && bf==1 && cf==1))
+            if ((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1))
             {
                 cpu.Registers.P |= PFlags.V;
             }

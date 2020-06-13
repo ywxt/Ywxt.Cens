@@ -7,15 +7,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x60,  AddressingMode.ImplicitAddressingMode}
+                {0x60, AddressingMode.ImplicitAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address1, byte data, bool pageCrossed)
         {
             var address = cpu.Stack.PopWord();
-            cpu.Registers.Pc = (ushort)(address + 1);
+            cpu.Registers.Pc = (ushort) (address + 1);
 
             return instruction switch
             {

@@ -13,13 +13,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xF0, AddressingMode.RelativeAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             var oldAddress = cpu.Registers.Pc;
             var jmpSuccess = cpu.Registers.P.HasFlag(PFlags.Z);
             if (jmpSuccess)
             {
-                cpu.Registers.Pc = data;
+                cpu.Registers.Pc = address;
             }
 
 

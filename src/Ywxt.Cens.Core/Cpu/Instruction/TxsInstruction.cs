@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -8,12 +7,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x9A,AddressingMode.ImplicitAddressingMode}
+                {0x9A, AddressingMode.ImplicitAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             cpu.Registers.Sp = cpu.Registers.X;
             return instruction switch
@@ -21,7 +20,6 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0x9A => 2,
                 _ => 0
             };
-
         }
     }
 }

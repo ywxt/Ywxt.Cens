@@ -20,9 +20,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
-            cpu.Registers.A = (byte) data;
+            cpu.Registers.A = data;
             cpu.Registers.SetZAndN(cpu.Registers.A);
 
             return instruction switch

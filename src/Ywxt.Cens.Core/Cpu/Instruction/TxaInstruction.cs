@@ -8,12 +8,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x8A,AddressingMode.ImplicitAddressingMode}
+                {0x8A, AddressingMode.ImplicitAddressingMode}
             };
 
-        public AddressingType AddressingType { get; }= AddressingType.Data;
+        public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             cpu.Registers.A = cpu.Registers.X;
             cpu.Registers.SetZAndN(cpu.Registers.A);
@@ -22,7 +22,6 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0x8A => 2,
                 _ => 0
             };
-
         }
     }
 }

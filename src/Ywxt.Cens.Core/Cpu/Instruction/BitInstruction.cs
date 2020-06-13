@@ -12,9 +12,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
-            var value = (byte) data;
+            var value = data;
             if ((value & 0b10000000) >> 7 == 1)
             {
                 cpu.Registers.P |= PFlags.N;
@@ -24,7 +24,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 cpu.Registers.P &= ~PFlags.N;
             }
 
-            if ((value& 0b01000000) >> 6 == 1)
+            if ((value & 0b01000000) >> 6 == 1)
             {
                 cpu.Registers.P |= PFlags.V;
             }
