@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Xunit;
@@ -12,7 +13,7 @@ namespace Ywxt.Cens.Core.Test
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly Cartridge _cartridge;
-        private readonly IEnumerator _textLog;
+        private readonly IEnumerator<Match> _textLog;
 
         public CpuTest(ITestOutputHelper testOutputHelper)
         {
@@ -23,9 +24,9 @@ namespace Ywxt.Cens.Core.Test
             var sram = new byte[0x2000];
             var ines = new Ines(file);
             _cartridge = new Cartridge(ines, sram);
-            _textLog = Regex.Matches(log,
+            _textLog = ((IEnumerable<Match>) Regex.Matches(log,
                     @"^(?<ADDR>[A-Z0-9]{4})  ([A-Z0-9]{2} )+\s+A:(?<A>[A-Z0-9]{2}) X:(?<X>[A-Z0-9]{2}) Y:(?<Y>[A-Z0-9]{2}) P:(?<P>[A-Z0-9]{2}) SP:(?<SP>[A-Z0-9]{2})  CYC:(?<CYC>\d+)",
-                    RegexOptions.Multiline)
+                    RegexOptions.Multiline))
                 .GetEnumerator();
         }
 
@@ -41,7 +42,7 @@ namespace Ywxt.Cens.Core.Test
                 _testOutputHelper.WriteLine("{0:X2}  A:{1:X2} X:{2:X2} Y:{3:X2} P:{4:X2} SP:{5:X2} CYC:{6}",
                     (int) registers.Pc, (int) registers.A, (int) registers.X, (int) registers.Y, (int) registers.P,
                     (int) registers.Sp, cycles);
-                Assert.True(Check(cpu.Registers, cycles),"寄存器状态校验失败");
+                Assert.True(Check(cpu.Registers, cycles), "寄存器状态校验失败");
             };
             while (true)
             {
@@ -56,16 +57,17 @@ namespace Ywxt.Cens.Core.Test
                 return false;
             }
 
-            if (!(_textLog.Current is Match match)) return false;
+            var match = _textLog.Current;
+            if (match == null) return true;
             _testOutputHelper.WriteLine(
                 $"{match.Groups["ADDR"].Value}  A:{match.Groups["A"].Value} X:{match.Groups["X"].Value} Y:{match.Groups["Y"].Value} P:{match.Groups["P"].Value} SP:{match.Groups["SP"].Value} CYC:{match.Groups["CYC"].Value}");
             return
-                match.Groups["ADDR"].Value == ((int)registers.Pc).ToString("X4") &&
-                match.Groups["A"].Value == ((int)registers.A).ToString("X2") &&
-                match.Groups["P"].Value == ((int)registers.P).ToString("X2") &&
-                match.Groups["X"].Value == ((int)registers.X).ToString("X2") &&
-                match.Groups["Y"].Value == ((int)registers.Y).ToString("X2") &&
-                match.Groups["SP"].Value == ((int)registers.Sp).ToString("X2") &&
+                match.Groups["ADDR"].Value == ((int) registers.Pc).ToString("X4") &&
+                match.Groups["A"].Value == ((int) registers.A).ToString("X2") &&
+                match.Groups["P"].Value == ((int) registers.P).ToString("X2") &&
+                match.Groups["X"].Value == ((int) registers.X).ToString("X2") &&
+                match.Groups["Y"].Value == ((int) registers.Y).ToString("X2") &&
+                match.Groups["SP"].Value == ((int) registers.Sp).ToString("X2") &&
                 match.Groups["CYC"].Value == cycle.ToString();
         }
     }
