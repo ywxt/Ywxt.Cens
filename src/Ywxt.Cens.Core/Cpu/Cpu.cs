@@ -15,8 +15,9 @@ namespace Ywxt.Cens.Core.Cpu
         private int _deferCycles = 0;
         private int _cycles = 0;
 
-        public event Action<Registers,IStack,int>? StepBeforeEvent;
-        
+        internal event Action<Registers,IStack,int>? StepBeforeEvent;
+
+        internal bool IsDevelopment = false;
 
         public Registers Registers { get; } = new Registers();
 
@@ -34,7 +35,10 @@ namespace Ywxt.Cens.Core.Cpu
         {
             if (_deferCycles == 0)
             {
-                OnStepBeforeEvent(Registers,Stack,_cycles);
+                if (IsDevelopment)
+                {
+                    OnStepBeforeEvent(Registers,Stack,_cycles);
+                }
                 Step();
                 
             }
