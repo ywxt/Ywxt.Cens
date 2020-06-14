@@ -8,9 +8,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return 0;
         }
-
-        
-        
     }
 
     public class AccumulatorAddressing : IAddressing
@@ -21,9 +18,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return registers.A;
         }
-
-        
-        
     }
 
     public class ImmediateAddressing : IAddressing
@@ -34,9 +28,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return cpuBus.ReadByte(registers.Pc++);
         }
-
-        
-        
     }
 
     public class AbsoluteAddressing : IAddressing
@@ -49,7 +40,6 @@ namespace Ywxt.Cens.Core.Cpu
             registers.Pc += 2;
             return address;
         }
-
     }
 
     public class AbsoluteXAddressing : IAddressing
@@ -62,9 +52,6 @@ namespace Ywxt.Cens.Core.Cpu
             registers.Pc += 2;
             return (ushort) (cpuBus.ReadWord(address) + registers.X);
         }
-
-        
-        
     }
 
     public class AbsoluteYAddressing : IAddressing
@@ -77,9 +64,6 @@ namespace Ywxt.Cens.Core.Cpu
             registers.Pc += 2;
             return (ushort) (cpuBus.ReadWord(address) + registers.Y);
         }
-
-        
-        
     }
 
     public class ZeroPageAddressing : IAddressing
@@ -90,9 +74,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return cpuBus.ReadByte(registers.Pc++);
         }
-
-        
-        
     }
 
     public class ZeroPageXAddressing : IAddressing
@@ -103,9 +84,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return (ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.X) & 0x00FF);
         }
-
-        
-        
     }
 
     public class ZeroPageYAddressing : IAddressing
@@ -116,10 +94,6 @@ namespace Ywxt.Cens.Core.Cpu
         {
             return (ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.Y) & 0x00FF);
         }
-
-        
-
-    
     }
 
     public class RelativeAddressing : IAddressing
@@ -131,9 +105,6 @@ namespace Ywxt.Cens.Core.Cpu
             var op = unchecked((sbyte) cpuBus.ReadByte(registers.Pc++));
             return (ushort) (registers.Pc + op);
         }
-
-        
-        
     }
 
     public class IndirectAddressing : IAddressing
@@ -147,9 +118,6 @@ namespace Ywxt.Cens.Core.Cpu
             var high = (ushort) ((low & 0xFF00) | ((low + 1) & 0x00FF));
             return (ushort) ((cpuBus.ReadByte(high) << 8) | cpuBus.ReadByte(low));
         }
-
-        
-        
     }
 
     public class IndirectXAddressing : IAddressing
@@ -158,10 +126,11 @@ namespace Ywxt.Cens.Core.Cpu
 
         public ushort Addressing(Registers registers, IBus cpuBus)
         {
-            return cpuBus.ReadWord((ushort) (registers.X + cpuBus.ReadByte(registers.Pc++)));
+            var address = (ushort) (registers.X + cpuBus.ReadByte(registers.Pc++));
+            var low = cpuBus.ReadByte((ushort) (address & 0x00FF));
+            var high = cpuBus.ReadByte((ushort) ((address + 1) & 0x00FF));
+            return (ushort) (low + (high << 8));
         }
-
-        
     }
 
     public class IndirectYAddressing : IAddressing
@@ -173,8 +142,5 @@ namespace Ywxt.Cens.Core.Cpu
             var address = cpuBus.ReadWord(cpuBus.ReadByte(registers.Pc++));
             return (ushort) (address + registers.Y);
         }
-
-        
-
     }
 }

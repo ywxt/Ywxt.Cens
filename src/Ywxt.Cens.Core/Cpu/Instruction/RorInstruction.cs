@@ -3,16 +3,16 @@ using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
-    public sealed class LsrInstruction : IInstruction
+    public sealed class RorInstruction : IInstruction
     {
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x4A, AddressingMode.AccumulatorAddressingMode},
-                {0x46, AddressingMode.ZeroPageAddressingMode},
-                {0x56, AddressingMode.ZeroPageXAddressingMode},
-                {0x4E, AddressingMode.AbsoluteAddressingMode},
-                {0x5E, AddressingMode.AbsoluteXAddressingMode}
+                {0x6A, AddressingMode.AccumulatorAddressingMode},
+                {0x66, AddressingMode.ZeroPageAddressingMode},
+                {0x76, AddressingMode.ZeroPageXAddressingMode},
+                {0x6E, AddressingMode.AbsoluteAddressingMode},
+                {0x7E, AddressingMode.AbsoluteXAddressingMode}
             };
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
@@ -23,31 +23,32 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             byte @new = 0;
             switch (instruction)
             {
-                case 0x4A:
+                case 0x6A:
                     old = cpu.Registers.A;
-                    cpu.Registers.A = (byte) (data >> 1);
+                    cpu.Registers.A = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
                     @new = cpu.Registers.A;
                     break;
-                case 0x46:
-                case 0x56:
-                case 0x4E:
-                case 0x5E:
+                case 0x66:
+                case 0x76:
+                case 0x6E:
+                case 0x7E:
                     old = cpu.Bus.ReadByte(address);
-                    cpu.Bus.WriteByte(address, (byte) (data >> 1));
-                    @new = (byte) (data >> 1);
+                    cpu.Bus.WriteByte(address, (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7)));
+                    @new = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
                     break;
             }
+
 
             cpu.Registers.SetC((old & 1) == 1);
             cpu.Registers.SetZAndN(@new);
 
             return instruction switch
             {
-                0x4A => 2,
-                0x46 => 5,
-                0x56 => 6,
-                0x4E => 6,
-                0x5E => 7,
+                0x6A => 2,
+                0x66 => 5,
+                0x76 => 6,
+                0x6E => 6,
+                0x7E => 7,
                 _ => 0
             };
         }

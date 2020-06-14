@@ -24,5 +24,17 @@ namespace Ywxt.Cens.Core.Utils
                 registers.P &= ~PFlags.N;
             }
         }
+
+        public static void SetC(this Registers registers, bool value)
+        {
+            if (value)
+            {
+                registers.P |= PFlags.C;
+            }
+            else
+            {
+                registers.P &= ~PFlags.C;
+            }
+        }
     }
 }
