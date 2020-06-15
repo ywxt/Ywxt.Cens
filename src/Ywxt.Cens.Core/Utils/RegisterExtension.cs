@@ -6,6 +6,12 @@ namespace Ywxt.Cens.Core.Utils
     {
         public static void SetZAndN(this Registers registers, byte flag)
         {
+            registers.SetZ(flag);
+            registers.SetN(flag);
+        }
+
+        public static void SetZ(this Registers registers, byte flag)
+        {
             if (flag == 0)
             {
                 registers.P |= PFlags.Z;
@@ -14,7 +20,10 @@ namespace Ywxt.Cens.Core.Utils
             {
                 registers.P &= ~PFlags.Z;
             }
+        }
 
+        public static void SetN(this Registers registers, byte flag)
+        {
             if (flag >> 7 == 1)
             {
                 registers.P |= PFlags.N;

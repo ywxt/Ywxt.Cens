@@ -19,12 +19,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
-            byte old = 0;
+            byte old = data;
             byte @new = 0;
             switch (instruction)
             {
                 case 0x2A:
-                    old = cpu.Registers.A;
                     cpu.Registers.A = (byte) ((data << 1) | (byte) (cpu.Registers.P & PFlags.C));
                     @new = cpu.Registers.A;
                     break;
@@ -32,7 +31,6 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 case 0x36:
                 case 0x2E:
                 case 0x3E:
-                    old = cpu.Bus.ReadByte(address);
                     cpu.Bus.WriteByte(address, (byte) ((data << 1) | (byte) (cpu.Registers.P & PFlags.C)));
                     @new = (byte) ((data << 1) | (byte) (cpu.Registers.P & PFlags.C));
                     break;
