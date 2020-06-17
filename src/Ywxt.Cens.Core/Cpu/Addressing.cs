@@ -52,7 +52,8 @@ namespace Ywxt.Cens.Core.Cpu
         {
             var address = registers.Pc;
             registers.Pc += 2;
-            var result = (ushort) (cpuBus.ReadWord(address) + registers.X);
+            address = cpuBus.ReadWord(address);
+            var result = (ushort) (address + registers.X);
             return (result, InstructionUtil.IsPageCrossed(address, result));
         }
     }
@@ -65,7 +66,8 @@ namespace Ywxt.Cens.Core.Cpu
         {
             var address = registers.Pc;
             registers.Pc += 2;
-            var result = (ushort) (cpuBus.ReadWord(address) + registers.Y);
+            address = cpuBus.ReadWord(address);
+            var result = (ushort) (address + registers.Y);
             return (result, InstructionUtil.IsPageCrossed(address, result));
         }
     }

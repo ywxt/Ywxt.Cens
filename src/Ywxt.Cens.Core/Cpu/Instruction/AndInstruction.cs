@@ -15,7 +15,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x3D, AddressingMode.AbsoluteXAddressingMode},
                 {0x39, AddressingMode.AbsoluteYAddressingMode},
                 {0x21, AddressingMode.IndirectXAddressingMode},
-                {0x32, AddressingMode.IndirectYAddressingMode}
+                {0x31, AddressingMode.IndirectYAddressingMode}
             };
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
@@ -33,7 +33,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0x3D => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
                 0x39 => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
                 0x21 => 6,
-                0x32 => 5 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
+                0x31 => 5 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
                 _ => 0
             };
         }
