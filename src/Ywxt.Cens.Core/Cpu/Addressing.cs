@@ -1,12 +1,14 @@
+using Ywxt.Cens.Core.Utils;
+
 namespace Ywxt.Cens.Core.Cpu
 {
     public class ImplicitAddressing : IAddressing
     {
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return 0;
+            return (0, false);
         }
     }
 
@@ -14,9 +16,9 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return registers.A;
+            return (registers.A, false);
         }
     }
 
@@ -24,9 +26,9 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return cpuBus.ReadByte(registers.Pc++);
+            return (cpuBus.ReadByte(registers.Pc++), false);
         }
     }
 
@@ -34,11 +36,11 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var address = cpuBus.ReadWord(registers.Pc);
             registers.Pc += 2;
-            return address;
+            return (address, false);
         }
     }
 
@@ -46,11 +48,12 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var address = registers.Pc;
             registers.Pc += 2;
-            return (ushort) (cpuBus.ReadWord(address) + registers.X);
+            var result = (ushort) (cpuBus.ReadWord(address) + registers.X);
+            return (result, InstructionUtil.IsPageCrossed(address, result));
         }
     }
 
@@ -58,11 +61,12 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var address = registers.Pc;
             registers.Pc += 2;
-            return (ushort) (cpuBus.ReadWord(address) + registers.Y);
+            var result = (ushort) (cpuBus.ReadWord(address) + registers.Y);
+            return (result, InstructionUtil.IsPageCrossed(address, result));
         }
     }
 
@@ -70,9 +74,9 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return cpuBus.ReadByte(registers.Pc++);
+            return (cpuBus.ReadByte(registers.Pc++), false);
         }
     }
 
@@ -80,9 +84,9 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return (ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.X) & 0x00FF);
+            return ((ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.X) & 0x00FF), false);
         }
     }
 
@@ -90,9 +94,9 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            return (ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.Y) & 0x00FF);
+            return ((ushort) ((cpuBus.ReadByte(registers.Pc++) + registers.Y) & 0x00FF), false);
         }
     }
 
@@ -100,10 +104,11 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var op = unchecked((sbyte) cpuBus.ReadByte(registers.Pc++));
-            return (ushort) (registers.Pc + op);
+            var result = (ushort) (registers.Pc + op);
+            return (result, InstructionUtil.IsPageCrossed(registers.Pc, result));
         }
     }
 
@@ -111,12 +116,13 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var low = cpuBus.ReadWord(registers.Pc);
             registers.Pc += 2;
             var high = (ushort) ((low & 0xFF00) | ((low + 1) & 0x00FF));
-            return (ushort) ((cpuBus.ReadByte(high) << 8) | cpuBus.ReadByte(low));
+            var result = (ushort) ((cpuBus.ReadByte(high) << 8) | cpuBus.ReadByte(low));
+            return (result, false);
         }
     }
 
@@ -124,12 +130,13 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var address = (ushort) (registers.X + cpuBus.ReadByte(registers.Pc++));
             var low = cpuBus.ReadByte((ushort) (address & 0x00FF));
             var high = cpuBus.ReadByte((ushort) ((address + 1) & 0x00FF));
-            return (ushort) (low + (high << 8));
+            var result = (ushort) (low + (high << 8));
+            return (result, InstructionUtil.IsPageCrossed(result, address));
         }
     }
 
@@ -137,10 +144,11 @@ namespace Ywxt.Cens.Core.Cpu
     {
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public ushort Addressing(Registers registers, IBus cpuBus)
+        public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
             var address = cpuBus.ReadWord(cpuBus.ReadByte(registers.Pc++));
-            return (ushort) (address + registers.Y);
+            var result = (ushort) (address + registers.Y);
+            return (result, InstructionUtil.IsPageCrossed(result, address));
         }
     }
 }
