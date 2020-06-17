@@ -14,8 +14,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         /// <param name="instruction"></param>
         /// <param name="address"></param>
         /// <param name="data"></param>
-        /// <param name="pageCrossed"></param>
         /// <returns></returns>
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed);
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data);
     }
 }

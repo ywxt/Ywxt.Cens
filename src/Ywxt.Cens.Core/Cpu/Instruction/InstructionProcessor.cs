@@ -23,16 +23,14 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             }
 
 
-            var pageCrossed = false;
             // 寻址是地址，需要的是数据
             if (ins.AddressingType == AddressingType.Data &&
                 addrMode.AddressingType == AddressingType.Address)
             {
-                pageCrossed = (cpu.Registers.Pc & 0xFF00) != (address & 0xFF00);
                 data = cpu.Bus.ReadByte(address);
             }
 
-            return ins.Invoke(cpu, instruction, address, data, pageCrossed);
+            return ins.Invoke(cpu, instruction, address, data);
         }
     }
 }

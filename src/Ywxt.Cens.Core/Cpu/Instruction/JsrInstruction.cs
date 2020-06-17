@@ -12,7 +12,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public AddressingType AddressingType { get; } = AddressingType.Address;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data)
         {
             cpu.Stack.PushWord((ushort) (cpu.Registers.Pc - 1));
             cpu.Registers.Pc = address;

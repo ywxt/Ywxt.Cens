@@ -3,23 +3,30 @@ using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
-    public sealed class DeyInstruction : IInstruction
+    public sealed class IncInstruction : IInstruction
     {
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0x88, AddressingMode.ImplicitAddressingMode}
+                {0xE6, AddressingMode.ZeroPageAddressingMode},
+                {0xF6, AddressingMode.ZeroPageXAddressingMode},
+                {0xEE, AddressingMode.AbsoluteAddressingMode},
+                {0xFE, AddressingMode.AbsoluteXAddressingMode}
             };
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, byte data)
         {
-            cpu.Registers.Y--;
-            cpu.Registers.SetZAndN(cpu.Registers.Y);
+            data++;
+            cpu.Bus.WriteByte(address, data);
+            cpu.Registers.SetZAndN(data);
             return instruction switch
             {
-                0x88 => 2,
+                0xE6 => 5,
+                0xF6 => 6,
+                0xEE => 6,
+                0xFE => 7,
                 _ => 0
             };
         }

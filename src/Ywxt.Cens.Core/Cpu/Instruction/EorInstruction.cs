@@ -20,7 +20,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data)
         {
             cpu.Registers.A = (byte) (cpu.Registers.A ^ data);
             cpu.Registers.SetZAndN(cpu.Registers.A);
@@ -30,10 +30,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0x45 => 3,
                 0x55 => 4,
                 0x4D => 4,
-                0x5D => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
-                0x59 => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
+                0x5D => 4 + InstructionUtil.GetClockCycleByCrossingPage(cpu.Registers.Pc, address),
+                0x59 => 4 + InstructionUtil.GetClockCycleByCrossingPage(cpu.Registers.Pc, address),
                 0x41 => 6,
-                0x52 => 5 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
+                0x52 => 5 + InstructionUtil.GetClockCycleByCrossingPage(cpu.Registers.Pc, address),
                 _ => 0
             };
         }
