@@ -16,7 +16,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             data++;
             cpu.Bus.WriteByte(address, data);

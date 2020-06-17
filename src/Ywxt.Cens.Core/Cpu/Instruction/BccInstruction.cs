@@ -13,7 +13,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xF0, AddressingMode.RelativeAddressingMode}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             var oldAddress = cpu.Registers.Pc;
             var jmpSuccess = cpu.Registers.P.HasFlag(PFlags.Z);
@@ -25,7 +25,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
             return instruction switch
             {
-                0xF0 => 2 + BranchInstructionUtil.GetClockCycleIncrement(jmpSuccess, oldAddress, cpu.Registers.Pc),
+                0xF0 => 2 + InstructionUtil.GetJmpClockCycleIncrement(jmpSuccess, pageCrossed),
                 _ => 0
             };
         }
