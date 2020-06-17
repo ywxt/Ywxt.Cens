@@ -10,25 +10,26 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var addrMode = AddressingModes.Get(ins.OpCodes[instruction]);
             ushort address = 0;
             byte data = 0;
+            var pageCrossed = false;
+            var result = addrMode.Addressing(cpu.Registers, cpu.Bus);
             switch (addrMode.AddressingType)
             {
                 case AddressingType.Data:
-                    data = (byte) addrMode.Addressing(cpu.Registers, cpu.Bus);
+                    data = (byte) result.address;
+                    pageCrossed = result.pageCrossed;
                     break;
                 case AddressingType.Address:
-                    address = addrMode.Addressing(cpu.Registers, cpu.Bus);
+                    address = result.address;
+                    pageCrossed = result.pageCrossed;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-
-            var pageCrossed = false;
             // 寻址是地址，需要的是数据
             if (ins.AddressingType == AddressingType.Data &&
                 addrMode.AddressingType == AddressingType.Address)
             {
-                pageCrossed = (cpu.Registers.Pc & 0xFF00) != (address & 0xFF00);
                 data = cpu.Bus.ReadByte(address);
             }
 
