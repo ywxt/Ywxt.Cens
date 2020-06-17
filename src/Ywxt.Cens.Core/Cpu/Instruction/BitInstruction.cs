@@ -8,6 +8,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             = new Dictionary<byte, AddressingMode>
             {
                 {0x24, AddressingMode.ZeroPageAddressingMode},
+                {0x2C, AddressingMode.AbsoluteAddressingMode}
             };
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
@@ -46,6 +47,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             return instruction switch
             {
                 0x24 => 3,
+                0x2C => 4,
                 _ => 0
             };
         }

@@ -146,7 +146,10 @@ namespace Ywxt.Cens.Core.Cpu
 
         public (ushort address, bool pageCrossed) Addressing(Registers registers, IBus cpuBus)
         {
-            var address = cpuBus.ReadWord(cpuBus.ReadByte(registers.Pc++));
+            ushort address = cpuBus.ReadByte(registers.Pc++);
+            var low = cpuBus.ReadByte((ushort) (address & 0x00FF));
+            var high = cpuBus.ReadByte((ushort) ((address + 1) & 0x00FF));
+            address = (ushort) (low + (high << 8));
             var result = (ushort) (address + registers.Y);
             return (result, InstructionUtil.IsPageCrossed(result, address));
         }
