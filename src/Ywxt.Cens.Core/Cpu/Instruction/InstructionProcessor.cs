@@ -10,17 +10,14 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var addrMode = AddressingModes.Get(ins.OpCodes[instruction]);
             ushort address = 0;
             byte data = 0;
-            var pageCrossed = false;
-            var (address1, b) = addrMode.Addressing(cpu.Registers, cpu.Bus);
+            var (address1, pageCrossed) = addrMode.Addressing(cpu.Registers, cpu.Bus);
             switch (addrMode.AddressingType)
             {
                 case AddressingType.Data:
                     data = (byte) address1;
-                    pageCrossed = b;
                     break;
                 case AddressingType.Address:
                     address = address1;
-                    pageCrossed = b;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

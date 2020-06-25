@@ -12,7 +12,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             {
                 {0x04, AddressingMode.ZeroPageAddressingMode},
                 {0x14, AddressingMode.ZeroPageXAddressingMode},
-                {0x32, AddressingMode.ZeroPageXAddressingMode},
+                {0x34, AddressingMode.ZeroPageXAddressingMode},
                 {0x44, AddressingMode.ZeroPageAddressingMode},
                 {0x54, AddressingMode.ZeroPageXAddressingMode},
                 {0x64, AddressingMode.ZeroPageAddressingMode},
