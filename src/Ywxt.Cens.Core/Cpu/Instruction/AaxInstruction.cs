@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
