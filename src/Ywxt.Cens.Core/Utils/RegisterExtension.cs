@@ -34,6 +34,7 @@ namespace Ywxt.Cens.Core.Utils
             }
         }
 
+
         public static void SetC(this Registers registers, bool value)
         {
             if (value)
@@ -43,6 +44,18 @@ namespace Ywxt.Cens.Core.Utils
             else
             {
                 registers.P &= ~PFlags.C;
+            }
+        }
+
+        public static void SetV(this Registers registers, bool value)
+        {
+            if (value)
+            {
+                registers.P |= PFlags.V;
+            }
+            else
+            {
+                registers.P &= ~PFlags.V;
             }
         }
     }

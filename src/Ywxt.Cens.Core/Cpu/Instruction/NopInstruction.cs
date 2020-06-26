@@ -7,7 +7,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
             = new Dictionary<byte, AddressingMode>
             {
-                {0xEA, AddressingMode.ImplicitAddressingMode}
+                {0x1A, AddressingMode.ImplicitAddressingMode},
+                {0x3A, AddressingMode.ImplicitAddressingMode},
+                {0x5A, AddressingMode.ImplicitAddressingMode},
+                {0x7A, AddressingMode.ImplicitAddressingMode},
+                {0xDA, AddressingMode.ImplicitAddressingMode},
+                {0xEA, AddressingMode.ImplicitAddressingMode},
+                {0xFA, AddressingMode.ImplicitAddressingMode}
             };
 
         public AddressingType AddressingType { get; } = AddressingType.Data;
@@ -16,7 +22,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         {
             return instruction switch
             {
+                0x1A => 2,
+                0x3A => 2,
+                0x5A => 2,
+                0x7A => 2,
+                0xDA => 2,
                 0xEA => 2,
+                0xFA => 2,
                 _ => 0,
             };
         }

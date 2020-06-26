@@ -24,14 +24,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         {
             var result = cpu.Registers.A - data;
             cpu.Registers.SetZAndN(unchecked((byte) result));
-            if (result >= 0)
-            {
-                cpu.Registers.P |= PFlags.C;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.C;
-            }
+            cpu.Registers.SetC(result >= 0);
 
             return instruction switch
             {

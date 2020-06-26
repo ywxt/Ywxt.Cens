@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Ywxt.Cens.Core.Utils;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -16,33 +17,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
         {
             var value = data;
-            if ((value & 0b10000000) >> 7 == 1)
-            {
-                cpu.Registers.P |= PFlags.N;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.N;
-            }
-
-            if ((value & 0b01000000) >> 6 == 1)
-            {
-                cpu.Registers.P |= PFlags.V;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.V;
-            }
+            cpu.Registers.SetN(data);
+            cpu.Registers.SetV((value & 0b01000000) >> 6 == 1);
 
             value &= cpu.Registers.A;
-            if (value == 0)
-            {
-                cpu.Registers.P |= PFlags.Z;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.Z;
-            }
+            cpu.Registers.SetZ(value);
 
             return instruction switch
             {

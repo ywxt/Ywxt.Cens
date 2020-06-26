@@ -9,6 +9,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             = new Dictionary<byte, AddressingMode>
             {
                 {0xE9, AddressingMode.ImmediateAddressingMode},
+                {0xEB, AddressingMode.ImmediateAddressingMode},
                 {0xE5, AddressingMode.ZeroPageAddressingMode},
                 {0xF5, AddressingMode.ZeroPageXAddressingMode},
                 {0xED, AddressingMode.AbsoluteAddressingMode},
@@ -27,29 +28,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var bf = data >> 7;
             var cf = (result >> 7) & 1;
             //判断溢出
-            if ((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1))
-            {
-                cpu.Registers.P |= PFlags.V;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.V;
-            }
+            cpu.Registers.SetV((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1));
 
-            if (((result >> 8) & 1) != 1)
-            {
-                cpu.Registers.P |= PFlags.C;
-            }
-            else
-            {
-                cpu.Registers.P &= ~PFlags.C;
-            }
+            cpu.Registers.SetC(((result >> 8) & 1) != 1);
 
             cpu.Registers.A = unchecked((byte) result);
             cpu.Registers.SetZAndN(cpu.Registers.A);
             return instruction switch
             {
                 0xE9 => 2,
+                0xEB => 2,
                 0xE5 => 3,
                 0xF5 => 4,
                 0xED => 4,
