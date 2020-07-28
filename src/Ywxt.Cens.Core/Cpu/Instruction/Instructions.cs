@@ -18,11 +18,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public static IInstruction? Get(byte instruction)
         {
-            if (InnerInstructions.TryGetValue(instruction, out var ins))
-            {
-                return ins;
-            }
-            return null;
+            return InnerInstructions.GetValueOrDefault(instruction);
         }
 
         private static void LoadInstructions(IDictionary<byte, IInstruction> instructions)
