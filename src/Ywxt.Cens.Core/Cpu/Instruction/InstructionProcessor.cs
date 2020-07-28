@@ -1,4 +1,5 @@
 using System;
+using Ywxt.Cens.Core.Exceptions;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -7,6 +8,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Process(ICpu cpu, byte instruction)
         {
             var ins = Instructions.Get(instruction);
+            if (ins is null) throw new UnknownInstructionException(instruction);
             var addrMode = AddressingModes.Get(ins.OpCodes[instruction]);
             ushort address = 0;
             byte data = 0;
@@ -14,7 +16,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             switch (addrMode.AddressingType)
             {
                 case AddressingType.Data:
-                    data = (byte) address1;
+                    data = (byte)address1;
                     break;
                 case AddressingType.Address:
                     address = address1;

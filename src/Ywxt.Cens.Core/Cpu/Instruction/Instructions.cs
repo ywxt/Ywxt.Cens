@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ywxt.Cens.Core.Exceptions;
 
 namespace Ywxt.Cens.Core.Cpu.Instruction
 {
@@ -17,14 +16,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             InnerInstructions = instructions;
         }
 
-        public static IInstruction Get(byte instruction)
+        public static IInstruction? Get(byte instruction)
         {
             if (InnerInstructions.TryGetValue(instruction, out var ins))
             {
                 return ins;
             }
-
-            throw new UnknownInstructionException(instruction);
+            return null;
         }
 
         private static void LoadInstructions(IDictionary<byte, IInstruction> instructions)
