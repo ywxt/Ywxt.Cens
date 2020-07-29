@@ -17,9 +17,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xFC, AddressingMode.AbsoluteXAddressingMode},
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             switch (instruction)
             {
@@ -31,7 +29,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 case 0x7C:
                 case 0xDC:
                 case 0xFC:
-                    return 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed);
+                    return 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed);
                 default: return 0;
             }
         }

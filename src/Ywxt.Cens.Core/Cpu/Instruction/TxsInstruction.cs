@@ -10,9 +10,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x9A, AddressingMode.ImplicitAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             cpu.Registers.Sp = cpu.Registers.X;
             return instruction switch

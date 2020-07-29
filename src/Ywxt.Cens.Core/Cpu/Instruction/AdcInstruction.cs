@@ -18,10 +18,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x71, AddressingMode.IndirectYAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
+            var data = this.GetData(address, cpu, instruction);
             var result = cpu.Registers.A + data + (byte) (cpu.Registers.P & PFlags.C);
             var af = cpu.Registers.A >> 7;
             var bf = data >> 7;
@@ -52,10 +51,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0x65 => 3,
                 0x75 => 4,
                 0x6D => 4,
-                0x7D => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
-                0x79 => 4 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
+                0x7D => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
+                0x79 => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
                 0x61 => 6,
-                0x71 => 5 + InstructionUtil.GetClockCycleByCrossingPage(pageCrossed),
+                0x71 => 5 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
                 _ => 0
             };
         }

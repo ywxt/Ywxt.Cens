@@ -14,10 +14,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xFE, AddressingMode.AbsoluteXAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
+            var data = cpu.Bus.ReadByte(address);
             data++;
             cpu.Bus.WriteByte(address, data);
             cpu.Registers.SetZAndN(data);

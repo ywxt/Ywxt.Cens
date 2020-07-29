@@ -20,10 +20,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x33, AddressingMode.IndirectYAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
+            var data = cpu.Bus.ReadByte(address);
             var @new = (byte) ((data << 1) | (byte) (cpu.Registers.P & PFlags.C));
             cpu.Bus.WriteByte(address, @new);
             cpu.Registers.SetC(data >> 7 == 1);

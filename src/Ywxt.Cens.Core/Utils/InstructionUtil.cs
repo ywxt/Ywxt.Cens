@@ -2,7 +2,7 @@ namespace Ywxt.Cens.Core.Utils
 {
     public static class InstructionUtil
     {
-        public static int GetClockCycleByCrossingPage(bool pageCrossed)
+        public static int GetClockCyclesByCrossingPage(bool pageCrossed)
         {
             return pageCrossed ? 1 : 0;
         }
@@ -18,7 +18,7 @@ namespace Ywxt.Cens.Core.Utils
             // 跳转成功
             if (success)
             {
-                cycle = 1 + GetClockCycleByCrossingPage(pageCrossed);
+                cycle = 1 + GetClockCyclesByCrossingPage(pageCrossed);
             }
 
             return cycle;

@@ -15,11 +15,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x7E, AddressingMode.AbsoluteXAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
-            byte old = data;
+            var data = this.GetData(address, cpu, instruction);
             byte @new = 0;
             switch (instruction)
             {
@@ -31,13 +29,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 case 0x76:
                 case 0x6E:
                 case 0x7E:
-                    cpu.Bus.WriteByte(address, (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7)));
                     @new = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
+                    cpu.Bus.WriteByte(address, @new);
                     break;
             }
 
 
-            cpu.Registers.SetC((old & 1) == 1);
+            cpu.Registers.SetC((data & 1) == 1);
             cpu.Registers.SetZAndN(@new);
 
             return instruction switch

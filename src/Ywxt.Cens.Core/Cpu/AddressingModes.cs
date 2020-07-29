@@ -18,35 +18,35 @@ namespace Ywxt.Cens.Core.Cpu
         IndirectAddressingMode,
         IndirectXAddressingMode,
         IndirectYAddressingMode,
-        
     }
+
     public static class AddressingModes
     {
-        public static ImplicitAddressing ImplicitAddressingMode = new ImplicitAddressing();
-        
-        public static AccumulatorAddressing AccumulatorAddressingMode = new AccumulatorAddressing();
-        
-        public static ImmediateAddressing ImmediateAddressingMode = new ImmediateAddressing();
-        
-        public static AbsoluteAddressing AbsoluteAddressingMode = new AbsoluteAddressing();
-        
-        public static AbsoluteXAddressing AbsoluteXAddressingMode = new AbsoluteXAddressing();
-        
-        public static AbsoluteYAddressing AbsoluteYAddressingMode = new AbsoluteYAddressing();
-        
-        public static ZeroPageAddressing ZeroPageAddressingMode = new ZeroPageAddressing();
-        
-        public static ZeroPageXAddressing ZeroPageXAddressingMode = new ZeroPageXAddressing();
-        
-        public static ZeroPageYAddressing ZeroPageYAddressingMode = new ZeroPageYAddressing();
-        
-        public static RelativeAddressing RelativeAddressingMode = new RelativeAddressing();
-        
-        public static IndirectAddressing IndirectAddressingMode = new IndirectAddressing();
-        
-        public static IndirectXAddressing IndirectXAddressingMode = new IndirectXAddressing();
-        
-        public static IndirectYAddressing IndirectYAddressingMode = new IndirectYAddressing();
+        private static readonly ImplicitAddressing ImplicitAddressingMode = new ImplicitAddressing();
+
+        private static readonly AccumulatorAddressing AccumulatorAddressingMode = new AccumulatorAddressing();
+
+        private static readonly ImmediateAddressing ImmediateAddressingMode = new ImmediateAddressing();
+
+        private static readonly AbsoluteAddressing AbsoluteAddressingMode = new AbsoluteAddressing();
+
+        private static readonly AbsoluteXAddressing AbsoluteXAddressingMode = new AbsoluteXAddressing();
+
+        private static readonly AbsoluteYAddressing AbsoluteYAddressingMode = new AbsoluteYAddressing();
+
+        private static readonly ZeroPageAddressing ZeroPageAddressingMode = new ZeroPageAddressing();
+
+        private static readonly ZeroPageXAddressing ZeroPageXAddressingMode = new ZeroPageXAddressing();
+
+        private static readonly ZeroPageYAddressing ZeroPageYAddressingMode = new ZeroPageYAddressing();
+
+        private static readonly RelativeAddressing RelativeAddressingMode = new RelativeAddressing();
+
+        private static readonly IndirectAddressing IndirectAddressingMode = new IndirectAddressing();
+
+        private static readonly IndirectXAddressing IndirectXAddressingMode = new IndirectXAddressing();
+
+        private static readonly IndirectYAddressing IndirectYAddressingMode = new IndirectYAddressing();
 
         public static IAddressing Get(AddressingMode addrMode)
         {
@@ -69,6 +69,4 @@ namespace Ywxt.Cens.Core.Cpu
             };
         }
     }
-
-   
 }

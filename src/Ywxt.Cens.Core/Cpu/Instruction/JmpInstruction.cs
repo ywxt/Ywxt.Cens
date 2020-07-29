@@ -11,9 +11,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x6C, AddressingMode.IndirectAddressingMode},
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Address;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             cpu.Registers.Pc = address;
             return instruction switch

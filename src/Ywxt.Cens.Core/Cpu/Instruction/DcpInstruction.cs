@@ -17,10 +17,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xD3, AddressingMode.IndirectYAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
+            var data = this.GetData(address, cpu, instruction);
             var tmp = unchecked((byte) (data - 1));
             cpu.Bus.WriteByte(address, tmp);
             var result = unchecked((ushort) (cpu.Registers.A - tmp));

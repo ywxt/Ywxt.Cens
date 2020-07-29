@@ -19,13 +19,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0xF3, AddressingMode.IndirectYAddressingMode}
             };
 
-        public AddressingType AddressingType => AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
+            var data = cpu.Bus.ReadByte(address);
             data++;
             cpu.Bus.WriteByte(address, data);
-            var result = unchecked(cpu.Registers.A - data - 1 + (byte)(cpu.Registers.P & PFlags.C));
+            var result = unchecked(cpu.Registers.A - data - 1 + (byte) (cpu.Registers.P & PFlags.C));
 
             var af = cpu.Registers.A >> 7;
             var bf = data >> 7;
@@ -35,7 +34,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
             cpu.Registers.SetC(((result >> 8) & 1) != 1);
 
-            cpu.Registers.A = unchecked((byte)result);
+            cpu.Registers.A = unchecked((byte) result);
             cpu.Registers.SetZAndN(cpu.Registers.A);
             return instruction switch
             {

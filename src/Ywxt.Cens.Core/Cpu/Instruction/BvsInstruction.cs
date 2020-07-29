@@ -11,9 +11,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x70, AddressingMode.RelativeAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Address;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             var jmpSuccess = cpu.Registers.P.HasFlag(PFlags.V);
             if (jmpSuccess)

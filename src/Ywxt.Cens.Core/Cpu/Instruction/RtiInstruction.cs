@@ -10,9 +10,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 {0x40, AddressingMode.ImplicitAddressingMode}
             };
 
-        public AddressingType AddressingType { get; } = AddressingType.Data;
-
-        public int Invoke(ICpu cpu, byte instruction, ushort address, byte data, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             var flags = (byte) (cpu.Stack.PopByte() | 0b0010_0000);
             cpu.Registers.P = (PFlags) flags;
