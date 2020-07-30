@@ -14,13 +14,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
-            var data = this.GetData(address, cpu, instruction);
+            var data = this.ReadData(address, cpu, instruction);
             var value = data;
-            cpu.Registers.SetN(data);
-            cpu.Registers.SetV((value & 0b01000000) >> 6 == 1);
+            cpu.Registers.SetNFlag(data);
+            cpu.Registers.SetVFlag((value & 0b01000000) >> 6 == 1);
 
             value &= cpu.Registers.A;
-            cpu.Registers.SetZ(value);
+            cpu.Registers.SetZFlag(value);
 
             return instruction switch
             {

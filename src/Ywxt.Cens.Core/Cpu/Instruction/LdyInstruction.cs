@@ -17,9 +17,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
-            var data = this.GetData(address, cpu, instruction);
+            var data = this.ReadData(address, cpu, instruction);
             cpu.Registers.Y = data;
-            cpu.Registers.SetZAndN(cpu.Registers.Y);
+            cpu.Registers.SetZAndNFlags(cpu.Registers.Y);
 
             return instruction switch
             {

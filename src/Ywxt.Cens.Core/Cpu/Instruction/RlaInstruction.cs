@@ -25,9 +25,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var data = cpu.Bus.ReadByte(address);
             var @new = (byte) ((data << 1) | (byte) (cpu.Registers.P & PFlags.C));
             cpu.Bus.WriteByte(address, @new);
-            cpu.Registers.SetC(data >> 7 == 1);
+            cpu.Registers.SetCFlag(data >> 7 == 1);
             cpu.Registers.A &= @new;
-            cpu.Registers.SetZAndN(cpu.Registers.A);
+            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
             return instruction switch
             {
                 0x27 => 5,

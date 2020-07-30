@@ -6,7 +6,7 @@ namespace Ywxt.Cens.Core.Utils
 {
     public static class InstructionExtension
     {
-        public static byte GetData(this IInstruction ins, ushort address, ICpu cpu, byte instruction)
+        public static byte ReadData(this IInstruction ins, ushort address, ICpu cpu, byte instruction)
         {
             if (!ins.OpCodes.TryGetValue(instruction, out var mode))
             {
@@ -20,6 +20,26 @@ namespace Ywxt.Cens.Core.Utils
             }
 
             return (byte) address;
+        }
+
+        public static void WriteData(this IInstruction ins, ushort address, byte data, ICpu cpu, byte instruction)
+        {
+            if (!ins.OpCodes.TryGetValue(instruction, out var mode))
+            {
+                throw new UnknownInstructionException(instruction);
+            }
+
+            var addressingMode = AddressingModes.Get(mode);
+            if (mode == AddressingMode.AccumulatorAddressingMode)
+            {
+                cpu.Registers.A = data;
+                return;
+            }
+
+            if (addressingMode.AddressingType == AddressingType.Address)
+            {
+                cpu.Bus.WriteByte(address, data);
+            }
         }
     }
 }

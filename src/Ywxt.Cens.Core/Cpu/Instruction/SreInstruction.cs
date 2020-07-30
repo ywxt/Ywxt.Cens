@@ -23,12 +23,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             var data = cpu.Bus.ReadByte(address);
-            cpu.Registers.SetC((data & 1) == 1);
+            cpu.Registers.SetCFlag((data & 1) == 1);
             data >>= 1;
             cpu.Bus.WriteByte(address, data);
 
             cpu.Registers.A ^= data;
-            cpu.Registers.SetZAndN(cpu.Registers.A);
+            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
 
             return instruction switch
             {

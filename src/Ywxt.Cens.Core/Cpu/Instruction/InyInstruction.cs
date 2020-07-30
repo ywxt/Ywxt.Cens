@@ -14,7 +14,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
             cpu.Registers.Y++;
-            cpu.Registers.SetZAndN(cpu.Registers.Y);
+            cpu.Registers.SetZAndNFlags(cpu.Registers.Y);
             return instruction switch
             {
                 0xC8 => 2,

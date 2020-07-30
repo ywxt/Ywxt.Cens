@@ -14,6 +14,8 @@ namespace Ywxt.Cens.Core.Test
         private readonly Cartridge _cartridge;
         private readonly IEnumerator<Match> _textLog;
 
+        private bool _isEnd;
+
         public CpuTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -43,17 +45,19 @@ namespace Ywxt.Cens.Core.Test
                     (int) registers.Sp, cycles);
                 Assert.True(Check(cpu.Registers, cycles), "寄存器状态校验失败");
             };
-            while (true)
+            while (!_isEnd)
             {
                 cpu.Clock();
             }
         }
 
-        public bool Check(Registers registers, int cycle)
+        private bool Check(Registers registers, int cycle)
         {
+            // 测试结束
             if (!_textLog.MoveNext())
             {
-                return false;
+                _isEnd = true;
+                return true;
             }
 
             var match = _textLog.Current;

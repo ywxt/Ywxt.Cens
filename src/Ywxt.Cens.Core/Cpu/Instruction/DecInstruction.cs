@@ -16,10 +16,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
-            var data = this.GetData(address, cpu, instruction);
+            var data = this.ReadData(address, cpu, instruction);
             data--;
             cpu.Bus.WriteByte(address, data);
-            cpu.Registers.SetZAndN(data);
+            cpu.Registers.SetZAndNFlags(data);
             return instruction switch
             {
                 0xC6 => 5,

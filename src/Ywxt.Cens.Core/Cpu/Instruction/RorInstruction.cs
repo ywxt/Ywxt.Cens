@@ -17,26 +17,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
         {
-            var data = this.GetData(address, cpu, instruction);
-            byte @new = 0;
-            switch (instruction)
-            {
-                case 0x6A:
-                    cpu.Registers.A = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
-                    @new = cpu.Registers.A;
-                    break;
-                case 0x66:
-                case 0x76:
-                case 0x6E:
-                case 0x7E:
-                    @new = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
-                    cpu.Bus.WriteByte(address, @new);
-                    break;
-            }
+            var data = this.ReadData(address, cpu, instruction);
+            var @new = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
+            this.WriteData(address, @new, cpu, instruction);
 
 
-            cpu.Registers.SetC((data & 1) == 1);
-            cpu.Registers.SetZAndN(@new);
+            cpu.Registers.SetCFlag((data & 1) == 1);
+            cpu.Registers.SetZAndNFlags(@new);
 
             return instruction switch
             {

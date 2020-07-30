@@ -30,12 +30,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var bf = data >> 7;
             var cf = (result >> 7) & 1;
             //判断溢出
-            cpu.Registers.SetV((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1));
+            cpu.Registers.SetVFlag((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1));
 
-            cpu.Registers.SetC(((result >> 8) & 1) != 1);
+            cpu.Registers.SetCFlag(((result >> 8) & 1) != 1);
 
             cpu.Registers.A = unchecked((byte) result);
-            cpu.Registers.SetZAndN(cpu.Registers.A);
+            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
             return instruction switch
             {
                 0xE7 => 5,

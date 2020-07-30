@@ -19,7 +19,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var data = cpu.Bus.ReadByte(address);
             data++;
             cpu.Bus.WriteByte(address, data);
-            cpu.Registers.SetZAndN(data);
+            cpu.Registers.SetZAndNFlags(data);
             return instruction switch
             {
                 0xE6 => 5,
