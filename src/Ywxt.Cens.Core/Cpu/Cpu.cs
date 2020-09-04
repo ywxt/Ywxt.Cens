@@ -9,15 +9,15 @@ namespace Ywxt.Cens.Core.Cpu
         private const ushort NmiVector = 0xFFFA;
         private const ushort ResetVector = 0xFFFC;
         private const ushort IrqOrBrkVector = 0xFFFE;
-        
+
         private readonly IInstructionProcessor _processor = new InstructionProcessor();
-        
+
         private int _deferCycles = 0;
         private int _cycles = 0;
 
-        internal event Action<Registers,IStack,int>? StepBeforeEvent;
-
-        internal bool IsDevelopment = false;
+#if DEBUG
+        internal event Action<Registers, IStack, int>? StepBeforeEvent;
+#endif
 
         public Registers Registers { get; } = new Registers();
 
@@ -35,12 +35,11 @@ namespace Ywxt.Cens.Core.Cpu
         {
             if (_deferCycles == 0)
             {
-                if (IsDevelopment)
-                {
-                    OnStepBeforeEvent(Registers,Stack,_cycles);
-                }
+#if DEBUG
+
+                OnStepBeforeEvent(Registers, Stack, _cycles);
+#endif
                 Step();
-                
             }
 
             _cycles++;

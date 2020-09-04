@@ -37,7 +37,6 @@ namespace Ywxt.Cens.Core.Test
             var cpu = new Cpu.Cpu(_cartridge);
             cpu.Reset();
             cpu.Registers.Pc = 0xC000;
-            cpu.IsDevelopment = true;
             cpu.StepBeforeEvent += (registers, stack, cycles) =>
             {
                 _testOutputHelper.WriteLine("{0:X2}  A:{1:X2} X:{2:X2} Y:{3:X2} P:{4:X2} SP:{5:X2} CYC:{6}",
