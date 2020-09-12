@@ -10,19 +10,19 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
     /// </summary>
     public sealed class SloInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x07, AddressingMode.ZeroPageAddressingMode},
-                {0x17, AddressingMode.ZeroPageXAddressingMode},
-                {0x0F, AddressingMode.AbsoluteAddressingMode},
-                {0x1F, AddressingMode.AbsoluteXAddressingMode},
-                {0x1B, AddressingMode.AbsoluteYAddressingMode},
-                {0x03, AddressingMode.IndirectXAddressingMode},
-                {0x13, AddressingMode.IndirectYAddressingMode}
+                {0x07, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0x17, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x0F, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0x1F, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
+                {0x1B, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
+                {0x03, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
+                {0x13, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = cpu.Bus.ReadByte(address);
             cpu.Registers.SetCFlag(data >> 7 == 1);

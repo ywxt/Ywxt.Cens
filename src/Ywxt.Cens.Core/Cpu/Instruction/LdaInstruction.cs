@@ -5,20 +5,20 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class LdaInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xA9, AddressingMode.ImmediateAddressingMode},
-                {0xA5, AddressingMode.ZeroPageAddressingMode},
-                {0xB5, AddressingMode.ZeroPageXAddressingMode},
-                {0xAD, AddressingMode.AbsoluteAddressingMode},
-                {0xBD, AddressingMode.AbsoluteXAddressingMode},
-                {0xB9, AddressingMode.AbsoluteYAddressingMode},
-                {0xA1, AddressingMode.IndirectXAddressingMode},
-                {0xB1, AddressingMode.IndirectYAddressingMode}
+                {0xA9, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xA5, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0xB5, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0xAD, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0xBD, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
+                {0xB9, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
+                {0xA1, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
+                {0xB1, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             cpu.Registers.A = data;
@@ -30,10 +30,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0xA5 => 3,
                 0xB5 => 4,
                 0xAD => 4,
-                0xBD => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
-                0xB9 => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
+                0xBD => 4 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
+                0xB9 => 4 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
                 0xA1 => 6,
-                0xB1 => 5 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
+                0xB1 => 5 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
                 _ => 0
             };
         }

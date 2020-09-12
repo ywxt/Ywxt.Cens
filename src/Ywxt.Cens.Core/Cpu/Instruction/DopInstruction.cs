@@ -7,26 +7,26 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
     /// </summary>
     public sealed class DopInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x04, AddressingMode.ZeroPageAddressingMode},
-                {0x14, AddressingMode.ZeroPageXAddressingMode},
-                {0x34, AddressingMode.ZeroPageXAddressingMode},
-                {0x44, AddressingMode.ZeroPageAddressingMode},
-                {0x54, AddressingMode.ZeroPageXAddressingMode},
-                {0x64, AddressingMode.ZeroPageAddressingMode},
-                {0x74, AddressingMode.ZeroPageXAddressingMode},
-                {0x80, AddressingMode.ImmediateAddressingMode},
-                {0x82, AddressingMode.ImmediateAddressingMode},
-                {0x89, AddressingMode.ImmediateAddressingMode},
-                {0xC2, AddressingMode.ImmediateAddressingMode},
-                {0xD4, AddressingMode.ZeroPageXAddressingMode},
-                {0xE2, AddressingMode.ImmediateAddressingMode},
-                {0xF4, AddressingMode.ZeroPageXAddressingMode}
+                {0x04, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0x14, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x34, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x44, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0x54, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x64, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0x74, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x80, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0x82, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0x89, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xC2, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xD4, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0xE2, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xF4, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             switch (instruction)
             {

@@ -5,15 +5,15 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class CpxInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xE0, AddressingMode.ImmediateAddressingMode},
-                {0xE4, AddressingMode.ZeroPageAddressingMode},
-                {0xEC, AddressingMode.AbsoluteAddressingMode}
+                {0xE0, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xE4, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0xEC, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var result = cpu.Registers.X - data;

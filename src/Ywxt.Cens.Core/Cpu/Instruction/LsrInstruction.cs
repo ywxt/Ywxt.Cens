@@ -5,17 +5,17 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class LsrInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x4A, AddressingMode.AccumulatorAddressingMode},
-                {0x46, AddressingMode.ZeroPageAddressingMode},
-                {0x56, AddressingMode.ZeroPageXAddressingMode},
-                {0x4E, AddressingMode.AbsoluteAddressingMode},
-                {0x5E, AddressingMode.AbsoluteXAddressingMode}
+                {0x4A, (AddressingMode.AccumulatorAddressingMode, InstructionType.Common, )},
+                {0x46, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0x56, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0x4E, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0x5E, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var old = data;

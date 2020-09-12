@@ -4,13 +4,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class RtsInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x60, AddressingMode.ImplicitAddressingMode}
+                {0x60, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address1, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address1)
         {
             var address = cpu.Stack.PopWord();
             cpu.Registers.Pc = (ushort) (address + 1);

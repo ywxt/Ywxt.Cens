@@ -4,13 +4,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class PhpInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x08, AddressingMode.ImplicitAddressingMode}
+                {0x08, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             cpu.Stack.PushByte((byte) (cpu.Registers.P | PFlags.U | PFlags.B));
             return instruction switch

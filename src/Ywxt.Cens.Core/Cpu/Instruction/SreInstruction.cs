@@ -8,8 +8,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         /// <summary>
         /// SRE - Shift Right then "Exclusive-Or" - LSR + EOR
         /// </summary>
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
                 [0x47] = AddressingMode.ZeroPageAddressingMode,
                 [0x57] = AddressingMode.ZeroPageXAddressingMode,
@@ -20,7 +20,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 [0x53] = AddressingMode.IndirectYAddressingMode
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = cpu.Bus.ReadByte(address);
             cpu.Registers.SetCFlag((data & 1) == 1);

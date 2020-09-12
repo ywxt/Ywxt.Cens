@@ -5,14 +5,14 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class BitInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x24, AddressingMode.ZeroPageAddressingMode},
-                {0x2C, AddressingMode.AbsoluteAddressingMode}
+                {0x24, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 3)},
+                {0x2C, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 4)}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var value = data;
@@ -22,12 +22,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             value &= cpu.Registers.A;
             cpu.Registers.SetZFlag(value);
 
-            return instruction switch
-            {
-                0x24 => 3,
-                0x2C => 4,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

@@ -5,19 +5,19 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class DcpInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xC7, AddressingMode.ZeroPageAddressingMode},
-                {0xD7, AddressingMode.ZeroPageXAddressingMode},
-                {0xCF, AddressingMode.AbsoluteAddressingMode},
-                {0xDF, AddressingMode.AbsoluteXAddressingMode},
-                {0xDB, AddressingMode.AbsoluteYAddressingMode},
-                {0xC3, AddressingMode.IndirectXAddressingMode},
-                {0xD3, AddressingMode.IndirectYAddressingMode}
+                {0xC7, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0xD7, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0xCF, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0xDF, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
+                {0xDB, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
+                {0xC3, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
+                {0xD3, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var tmp = unchecked((byte) (data - 1));

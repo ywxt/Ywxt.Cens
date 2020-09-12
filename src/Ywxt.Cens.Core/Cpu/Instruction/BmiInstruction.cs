@@ -5,13 +5,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class BmiInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x30, AddressingMode.RelativeAddressingMode}
+                {0x30, (AddressingMode.RelativeAddressingMode, InstructionType.CrossingPage, 2)}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var success = cpu.Registers.P.HasFlag(PFlags.N);
             if (success)
@@ -19,11 +19,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 cpu.Registers.Pc = address;
             }
 
-            return instruction switch
-            {
-                0x30 => 2 + InstructionUtil.GetJmpClockCycleIncrement(success, pageCrossed),
-                _ => 0
-            };
+            return InstructionUtil.GetBranchClockCycle(success);
         }
     }
 }

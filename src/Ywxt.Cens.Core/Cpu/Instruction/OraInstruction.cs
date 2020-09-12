@@ -5,36 +5,25 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class OraInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x09, AddressingMode.ImmediateAddressingMode},
-                {0x05, AddressingMode.ZeroPageAddressingMode},
-                {0x15, AddressingMode.ZeroPageXAddressingMode},
-                {0x0D, AddressingMode.AbsoluteAddressingMode},
-                {0x1D, AddressingMode.AbsoluteXAddressingMode},
-                {0x19, AddressingMode.AbsoluteYAddressingMode},
-                {0x01, AddressingMode.IndirectXAddressingMode},
-                {0x11, AddressingMode.IndirectYAddressingMode}
+                {0x09, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, 2)},
+                {0x05, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 3)},
+                {0x15, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 4)},
+                {0x0D, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 4)},
+                {0x1D, (AddressingMode.AbsoluteXAddressingMode, InstructionType.CrossingPage, 4)},
+                {0x19, (AddressingMode.AbsoluteYAddressingMode, InstructionType.CrossingPage, 4)},
+                {0x01, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 6)},
+                {0x11, (AddressingMode.IndirectYAddressingMode, InstructionType.CrossingPage, 5)}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             cpu.Registers.A = (byte) (cpu.Registers.A | data);
             cpu.Registers.SetZAndNFlags(cpu.Registers.A);
-            return instruction switch
-            {
-                0x09 => 2,
-                0x05 => 3,
-                0x15 => 4,
-                0x0D => 4,
-                0x1D => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
-                0x19 => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
-                0x01 => 6,
-                0x11 => 5 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
-                _ => 0
-            };
+            return 0;
         }
     }
 }

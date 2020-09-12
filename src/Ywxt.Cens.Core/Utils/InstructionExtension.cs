@@ -8,12 +8,12 @@ namespace Ywxt.Cens.Core.Utils
     {
         public static byte ReadData(this IInstruction ins, ushort address, ICpu cpu, byte instruction)
         {
-            if (!ins.OpCodes.TryGetValue(instruction, out var mode))
+            if (!ins.OpCodes.TryGetValue(instruction, out var value))
             {
                 throw new UnknownInstructionException(instruction);
             }
 
-            var addressingMode = AddressingModes.Get(mode);
+            var addressingMode = AddressingModes.Get(value.mode);
             if (addressingMode.AddressingType == AddressingType.Address)
             {
                 return cpu.Bus.ReadByte(address);
@@ -24,13 +24,13 @@ namespace Ywxt.Cens.Core.Utils
 
         public static void WriteData(this IInstruction ins, ushort address, byte data, ICpu cpu, byte instruction)
         {
-            if (!ins.OpCodes.TryGetValue(instruction, out var mode))
+            if (!ins.OpCodes.TryGetValue(instruction, out var value))
             {
                 throw new UnknownInstructionException(instruction);
             }
 
-            var addressingMode = AddressingModes.Get(mode);
-            if (mode == AddressingMode.AccumulatorAddressingMode)
+            var addressingMode = AddressingModes.Get(value.mode);
+            if (value.mode == AddressingMode.AccumulatorAddressingMode)
             {
                 cpu.Registers.A = data;
                 return;

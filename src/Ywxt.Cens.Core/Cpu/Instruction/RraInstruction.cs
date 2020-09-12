@@ -8,8 +8,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
     /// </summary>
     public sealed class RraInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
                 [0x67] = AddressingMode.ZeroPageAddressingMode,
                 [0x77] = AddressingMode.ZeroPageXAddressingMode,
@@ -20,7 +20,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 [0x73] = AddressingMode.IndirectYAddressingMode
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             // ROR
             ushort data = cpu.Bus.ReadByte(address);

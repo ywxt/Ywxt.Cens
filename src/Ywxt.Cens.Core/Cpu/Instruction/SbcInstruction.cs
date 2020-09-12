@@ -5,21 +5,21 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class SbcInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xE9, AddressingMode.ImmediateAddressingMode},
-                {0xEB, AddressingMode.ImmediateAddressingMode},
-                {0xE5, AddressingMode.ZeroPageAddressingMode},
-                {0xF5, AddressingMode.ZeroPageXAddressingMode},
-                {0xED, AddressingMode.AbsoluteAddressingMode},
-                {0xFD, AddressingMode.AbsoluteXAddressingMode},
-                {0xF9, AddressingMode.AbsoluteYAddressingMode},
-                {0xE1, AddressingMode.IndirectXAddressingMode},
-                {0xF1, AddressingMode.IndirectYAddressingMode}
+                {0xE9, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xEB, (AddressingMode.ImmediateAddressingMode, InstructionType.Common, )},
+                {0xE5, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0xF5, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0xED, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0xFD, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
+                {0xF9, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
+                {0xE1, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
+                {0xF1, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var result = unchecked(cpu.Registers.A - data - 1 + (byte) (cpu.Registers.P & PFlags.C));
@@ -40,10 +40,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
                 0xE5 => 3,
                 0xF5 => 4,
                 0xED => 4,
-                0xFD => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
-                0xF9 => 4 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
+                0xFD => 4 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
+                0xF9 => 4 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
                 0xE1 => 6,
-                0xF1 => 5 + InstructionUtil.GetClockCyclesByCrossingPage(pageCrossed),
+                0xF1 => 5 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
                 _ => 0
             };
         }

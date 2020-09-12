@@ -5,16 +5,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class IncInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xE6, AddressingMode.ZeroPageAddressingMode},
-                {0xF6, AddressingMode.ZeroPageXAddressingMode},
-                {0xEE, AddressingMode.AbsoluteAddressingMode},
-                {0xFE, AddressingMode.AbsoluteXAddressingMode}
+                {0xE6, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
+                {0xF6, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
+                {0xEE, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
+                {0xFE, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = cpu.Bus.ReadByte(address);
             data++;

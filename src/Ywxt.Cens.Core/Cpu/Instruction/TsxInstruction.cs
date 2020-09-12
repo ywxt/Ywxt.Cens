@@ -5,13 +5,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class TsxInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xBA, AddressingMode.ImplicitAddressingMode}
+                {0xBA, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, )}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             cpu.Registers.X = cpu.Registers.Sp;
             cpu.Registers.SetZAndNFlags(cpu.Registers.X);

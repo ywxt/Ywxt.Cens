@@ -5,21 +5,17 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class DeyInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x88, AddressingMode.ImplicitAddressingMode}
+                {0x88, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, 2)}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             cpu.Registers.Y--;
             cpu.Registers.SetZAndNFlags(cpu.Registers.Y);
-            return instruction switch
-            {
-                0x88 => 2,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

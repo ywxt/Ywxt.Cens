@@ -5,17 +5,17 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 {
     public sealed class AslInstruction : IInstruction
     {
-        public IReadOnlyDictionary<byte, AddressingMode> OpCodes { get; }
-            = new Dictionary<byte, AddressingMode>
+        public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
+            = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x0A, AddressingMode.AccumulatorAddressingMode},
-                {0x06, AddressingMode.ZeroPageAddressingMode},
-                {0x16, AddressingMode.ZeroPageXAddressingMode},
-                {0x0E, AddressingMode.AbsoluteAddressingMode},
-                {0x1E, AddressingMode.AbsoluteXAddressingMode}
+                {0x0A, (AddressingMode.AccumulatorAddressingMode, InstructionType.Common, 2)},
+                {0x06, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5)},
+                {0x16, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6)},
+                {0x0E, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6)},
+                {0x1E, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7)}
             };
 
-        public int Invoke(ICpu cpu, byte instruction, ushort address, bool pageCrossed)
+        public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
             var @new = (byte) (data << 1);
@@ -24,15 +24,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Registers.SetCFlag(data >> 7 == 1);
             cpu.Registers.SetZAndNFlags(@new);
 
-            return instruction switch
-            {
-                0x0A => 2,
-                0x06 => 5,
-                0x16 => 6,
-                0x0E => 6,
-                0x1E => 7,
-                _ => 0
-            };
+            return 0;
         }
     }
 }
