@@ -8,12 +8,12 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xA7, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
-                {0xB7, (AddressingMode.ZeroPageYAddressingMode, InstructionType.Common, )},
-                {0xAF, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
-                {0xBF, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
-                {0xA3, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
-                {0xB3, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
+                {0xA7, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 3)},
+                {0xB7, (AddressingMode.ZeroPageYAddressingMode, InstructionType.Common, 4)},
+                {0xAF, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 4)},
+                {0xBF, (AddressingMode.AbsoluteYAddressingMode, InstructionType.CrossingPage, 4)},
+                {0xA3, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 6)},
+                {0xB3, (AddressingMode.IndirectYAddressingMode, InstructionType.CrossingPage, 5)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -22,16 +22,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Registers.A = data;
             cpu.Registers.X = data;
             cpu.Registers.SetZAndNFlags(data);
-            return instruction switch
-            {
-                0xA7 => 3,
-                0xB7 => 4,
-                0xAF => 4,
-                0xBF => 4 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
-                0xA3 => 6,
-                0xB3 => 5 + InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
-                _ => 0
-            };
+            return 0;
         }
     }
 }

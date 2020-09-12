@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Ywxt.Cens.Core.Utils;
 
@@ -8,7 +9,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xD0, (AddressingMode.RelativeAddressingMode, InstructionType.CrossingPage, 2)}
+                {0xD0, (AddressingMode.RelativeAddressingMode, InstructionType.Branch, 2)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -20,7 +21,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             }
 
 
-            return InstructionUtil.GetBranchClockCycle(jmpSuccess);
+            return Convert.ToInt32(jmpSuccess);
         }
     }
 }

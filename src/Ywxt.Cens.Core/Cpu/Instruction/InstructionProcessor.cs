@@ -13,10 +13,16 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var (mode, insType, cycles) = ins.OpCodes[instruction];
             var addrMode = AddressingModes.Get(mode);
             var (address, pageCrossed) = addrMode.Addressing(cpu.Registers, cpu.Bus);
-            var cyclesIncrement = cycles + insType == InstructionType.CrossingPage
-                ? InstructionUtil.GetCrossingPageClockCycles(pageCrossed)
-                : 0;
-            return ins.Invoke(cpu, instruction, address) + cyclesIncrement;
+            var extraCycles = ins.Invoke(cpu, instruction, address);
+            var cyclesIncrement = insType switch
+            {
+                InstructionType.Common => 0,
+                InstructionType.CrossingPage => InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
+                InstructionType.Branch => InstructionUtil.GetBranchClockCycle(Convert.ToBoolean(extraCycles),
+                    pageCrossed),
+                _ => 0
+            };
+            return cycles + cyclesIncrement;
         }
     }
 }

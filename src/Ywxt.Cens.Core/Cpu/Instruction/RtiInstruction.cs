@@ -7,7 +7,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x40, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, )}
+                {0x40, (AddressingMode.ImplicitAddressingMode, InstructionType.Common, 6)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -15,11 +15,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var flags = (byte) (cpu.Stack.PopByte() | 0b0010_0000);
             cpu.Registers.P = (PFlags) flags;
             cpu.Registers.Pc = cpu.Stack.PopWord();
-            return instruction switch
-            {
-                0x40 => 6,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

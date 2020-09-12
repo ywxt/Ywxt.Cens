@@ -8,10 +8,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xE6, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
-                {0xF6, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
-                {0xEE, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
-                {0xFE, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )}
+                {0xE6, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5)},
+                {0xF6, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6)},
+                {0xEE, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6)},
+                {0xFE, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -20,14 +20,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             data++;
             cpu.Bus.WriteByte(address, data);
             cpu.Registers.SetZAndNFlags(data);
-            return instruction switch
-            {
-                0xE6 => 5,
-                0xF6 => 6,
-                0xEE => 6,
-                0xFE => 7,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

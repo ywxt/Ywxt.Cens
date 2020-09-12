@@ -2,7 +2,8 @@
 {
     public enum InstructionType
     {
-        CrossingPage,
         Common,
+        CrossingPage,
+        Branch
     }
 }

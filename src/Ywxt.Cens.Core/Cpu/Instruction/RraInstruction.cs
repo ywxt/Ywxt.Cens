@@ -11,13 +11,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                [0x67] = AddressingMode.ZeroPageAddressingMode,
-                [0x77] = AddressingMode.ZeroPageXAddressingMode,
-                [0x6F] = AddressingMode.AbsoluteAddressingMode,
-                [0x7F] = AddressingMode.AbsoluteXAddressingMode,
-                [0x7B] = AddressingMode.AbsoluteYAddressingMode,
-                [0x63] = AddressingMode.IndirectXAddressingMode,
-                [0x73] = AddressingMode.IndirectYAddressingMode
+                [0x67] = (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5),
+                [0x77] = (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6),
+                [0x6F] = (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6),
+                [0x7F] = (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7),
+                [0x7B] = (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, 7),
+                [0x63] = (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 8),
+                [0x73] = (AddressingMode.IndirectYAddressingMode, InstructionType.Common, 8)
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -36,17 +36,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Registers.SetCFlag(((result >> 8) & 1) == 1);
             cpu.Registers.A = unchecked((byte) result);
             cpu.Registers.SetZAndNFlags(cpu.Registers.A);
-            return instruction switch
-            {
-                0x67 => 5,
-                0x77 => 6,
-                0x6F => 6,
-                0x7F => 7,
-                0x7B => 7,
-                0x63 => 8,
-                0x73 => 8,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

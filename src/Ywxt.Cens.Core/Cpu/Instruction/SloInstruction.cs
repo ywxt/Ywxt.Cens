@@ -13,13 +13,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0x07, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
-                {0x17, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
-                {0x0F, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
-                {0x1F, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
-                {0x1B, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
-                {0x03, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
-                {0x13, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
+                {0x07, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5)},
+                {0x17, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6)},
+                {0x0F, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6)},
+                {0x1F, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7)},
+                {0x1B, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, 7)},
+                {0x03, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 8)},
+                {0x13, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, 8)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -30,17 +30,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Bus.WriteByte(address, data);
             cpu.Registers.A |= data;
             cpu.Registers.SetZAndNFlags(cpu.Registers.A);
-            return instruction switch
-            {
-                0x07 => 5,
-                0x17 => 6,
-                0x0F => 6,
-                0x1F => 7,
-                0x1B => 7,
-                0x03 => 8,
-                0x13 => 8,
-                _ => 0
-            };
+            return 0;
         }
     }
 }

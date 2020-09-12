@@ -11,13 +11,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                [0x47] = AddressingMode.ZeroPageAddressingMode,
-                [0x57] = AddressingMode.ZeroPageXAddressingMode,
-                [0x4F] = AddressingMode.AbsoluteAddressingMode,
-                [0x5F] = AddressingMode.AbsoluteXAddressingMode,
-                [0x5B] = AddressingMode.AbsoluteYAddressingMode,
-                [0x43] = AddressingMode.IndirectXAddressingMode,
-                [0x53] = AddressingMode.IndirectYAddressingMode
+                [0x47] = (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5),
+                [0x57] = (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6),
+                [0x4F] = (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6),
+                [0x5F] = (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7),
+                [0x5B] = (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, 7),
+                [0x43] = (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 8),
+                [0x53] = (AddressingMode.IndirectYAddressingMode, InstructionType.Common, 8)
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)

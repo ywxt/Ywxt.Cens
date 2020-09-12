@@ -10,13 +10,13 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public IReadOnlyDictionary<byte, (AddressingMode mode, InstructionType insType, int cycles)> OpCodes { get; }
             = new Dictionary<byte, (AddressingMode, InstructionType, int)>
             {
-                {0xE7, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, )},
-                {0xF7, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, )},
-                {0xEF, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, )},
-                {0xFF, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, )},
-                {0xFB, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, )},
-                {0xE3, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, )},
-                {0xF3, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, )}
+                {0xE7, (AddressingMode.ZeroPageAddressingMode, InstructionType.Common, 5)},
+                {0xF7, (AddressingMode.ZeroPageXAddressingMode, InstructionType.Common, 6)},
+                {0xEF, (AddressingMode.AbsoluteAddressingMode, InstructionType.Common, 6)},
+                {0xFF, (AddressingMode.AbsoluteXAddressingMode, InstructionType.Common, 7)},
+                {0xFB, (AddressingMode.AbsoluteYAddressingMode, InstructionType.Common, 7)},
+                {0xE3, (AddressingMode.IndirectXAddressingMode, InstructionType.Common, 8)},
+                {0xF3, (AddressingMode.IndirectYAddressingMode, InstructionType.Common, 8)}
             };
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
@@ -36,17 +36,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
             cpu.Registers.A = unchecked((byte) result);
             cpu.Registers.SetZAndNFlags(cpu.Registers.A);
-            return instruction switch
-            {
-                0xE7 => 5,
-                0xF7 => 6,
-                0xEF => 6,
-                0xFF => 7,
-                0xFB => 7,
-                0xE3 => 8,
-                0xF3 => 8,
-                _ => 0
-            };
+            return 0;
         }
     }
 }
