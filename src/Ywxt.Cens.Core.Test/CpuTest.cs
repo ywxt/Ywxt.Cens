@@ -60,7 +60,7 @@ namespace Ywxt.Cens.Core.Test
             }
 
             var match = _textLog.Current;
-            if (match == null) return true;
+            if (match is null) return false;
             _testOutputHelper.WriteLine(
                 $"{match.Groups["ADDR"].Value}  A:{match.Groups["A"].Value} X:{match.Groups["X"].Value} Y:{match.Groups["Y"].Value} P:{match.Groups["P"].Value} SP:{match.Groups["SP"].Value} CYC:{match.Groups["CYC"].Value}");
             return
