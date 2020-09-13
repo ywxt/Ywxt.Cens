@@ -16,11 +16,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var extraCycles = ins.Invoke(cpu, instruction, address);
             var cyclesIncrement = insType switch
             {
-                InstructionType.Common => 0,
-                InstructionType.CrossingPage => InstructionUtil.GetCrossingPageClockCycles(pageCrossed),
+                InstructionType.Common => extraCycles,
+                InstructionType.CrossingPage => InstructionUtil.GetCrossingPageClockCycles(pageCrossed) + extraCycles,
                 InstructionType.Branch => InstructionUtil.GetBranchClockCycle(Convert.ToBoolean(extraCycles),
                     pageCrossed),
-                _ => 0
+                _ => extraCycles
             };
             return cycles + cyclesIncrement;
         }

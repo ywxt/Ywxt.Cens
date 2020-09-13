@@ -30,17 +30,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             cpu.Registers.A ^= data;
             cpu.Registers.SetZAndNFlags(cpu.Registers.A);
 
-            return instruction switch
-            {
-                0x47 => 5,
-                0x57 => 6,
-                0x4F => 6,
-                0x5F => 7,
-                0x5B => 7,
-                0x43 => 8,
-                0x53 => 8,
-                _ => 0
-            };
+            return 0;
         }
     }
 }
