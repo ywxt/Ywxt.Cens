@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Ywxt.Cens.Core.Exceptions;
 using Ywxt.Cens.Core.Ppu;
 
@@ -9,19 +10,19 @@ namespace Ywxt.Cens.Core.Rom
     /// </summary>
     public class Header
     {
-        public static readonly byte[] NesSign = {0x4E, 0x45, 0x53, 0x1A};
-        
+        public static readonly ReadOnlyMemory<byte> NesSign = new byte[] {0x4E, 0x45, 0x53, 0x1A};
+
         public const int SignSize = 4;
         public const int PrgUnitSize = 16 * 1024;
         public const int ChrUnitSize = 8 * 1024;
         public const int UnusedSize = 5;
         public const int HeaderSize = 16;
         public const int TrainerSize = 512;
-        
+
         /// <summary>
         /// NES 文件标志，值为 $4E $45 $53 $1A
         /// </summary>
-        public byte[] Sign { get; }
+        public ReadOnlyMemory<byte> Sign { get; }
 
         /// <summary>
         /// PRG 大小，每个单元16k
@@ -83,12 +84,11 @@ namespace Ywxt.Cens.Core.Rom
 
         public static bool IsNesRom(Span<byte> header)
         {
-            return header.Length == HeaderSize && header[..SignSize] == NesSign;
+            return header.Length == HeaderSize && header[..SignSize].SequenceEqual(NesSign.Span);
         }
-        
+
         public Header(Span<byte> header)
         {
-           
             if (IsNesRom(header))
             {
                 throw new RomException("无效NES文件");
@@ -107,7 +107,7 @@ namespace Ywxt.Cens.Core.Rom
 
         public Mirroring Mirroring()
         {
-            if (((Flags6>>3) & 1) == 1)
+            if (((Flags6 >> 3) & 1) == 1)
             {
                 return Ppu.Mirroring.FourScreen;
             }
@@ -129,7 +129,7 @@ namespace Ywxt.Cens.Core.Rom
         {
             var low = Flags6 >> 4;
             var high = Flags7 >> 4;
-            return (byte)((high << 4) | low);
+            return (byte) ((high << 4) | low);
         }
 
         public bool VsUnisystem()
@@ -156,7 +156,5 @@ namespace Ywxt.Cens.Core.Rom
 
             return Flags8;
         }
-        
-       
     }
 }
