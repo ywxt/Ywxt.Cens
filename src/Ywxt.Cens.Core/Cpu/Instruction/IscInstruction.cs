@@ -24,18 +24,18 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var data = cpu.Bus.ReadByte(address);
             data++;
             cpu.Bus.WriteByte(address, data);
-            var result = unchecked(cpu.Registers.A - data - 1 + (byte) (cpu.Registers.P & PFlags.C));
+            var result = unchecked(cpu.CpuRegisters.A - data - 1 + (byte) (cpu.CpuRegisters.P & PFlags.C));
 
-            var af = cpu.Registers.A >> 7;
+            var af = cpu.CpuRegisters.A >> 7;
             var bf = data >> 7;
             var cf = (result >> 7) & 1;
             //判断溢出
-            cpu.Registers.SetVFlag((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1));
+            cpu.CpuRegisters.SetVFlag((af == 1 && cf == 0) | (af == 0 && bf == 1 && cf == 1));
 
-            cpu.Registers.SetCFlag(((result >> 8) & 1) != 1);
+            cpu.CpuRegisters.SetCFlag(((result >> 8) & 1) != 1);
 
-            cpu.Registers.A = unchecked((byte) result);
-            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
+            cpu.CpuRegisters.A = unchecked((byte) result);
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.A);
             return 0;
         }
     }

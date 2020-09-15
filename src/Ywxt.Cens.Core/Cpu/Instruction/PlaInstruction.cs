@@ -13,8 +13,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            cpu.Registers.A = cpu.Stack.PopByte();
-            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
+            cpu.CpuRegisters.A = cpu.Stack.PopByte();
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.A);
             return 0;
         }
     }

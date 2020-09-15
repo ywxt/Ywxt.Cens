@@ -18,8 +18,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
-            cpu.Registers.X = data;
-            cpu.Registers.SetZAndNFlags(cpu.Registers.X);
+            cpu.CpuRegisters.X = data;
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.X);
 
             return 0;
         }

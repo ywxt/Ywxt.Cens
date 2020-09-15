@@ -25,11 +25,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = cpu.Bus.ReadByte(address);
-            cpu.Registers.SetCFlag(data >> 7 == 1);
+            cpu.CpuRegisters.SetCFlag(data >> 7 == 1);
             data <<= 1;
             cpu.Bus.WriteByte(address, data);
-            cpu.Registers.A |= data;
-            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
+            cpu.CpuRegisters.A |= data;
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.A);
             return 0;
         }
     }

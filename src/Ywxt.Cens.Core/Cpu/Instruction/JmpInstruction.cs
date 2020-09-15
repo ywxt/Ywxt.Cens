@@ -13,7 +13,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            cpu.Registers.Pc = address;
+            cpu.CpuRegisters.Pc = address;
             return 0;
         }
     }

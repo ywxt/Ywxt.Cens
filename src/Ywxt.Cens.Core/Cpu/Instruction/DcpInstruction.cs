@@ -22,10 +22,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var data = this.ReadData(address, cpu, instruction);
             var tmp = unchecked((byte) (data - 1));
             cpu.Bus.WriteByte(address, tmp);
-            var result = unchecked((ushort) (cpu.Registers.A - tmp));
-            cpu.Registers.SetCFlag(result < 0x0100);
+            var result = unchecked((ushort) (cpu.CpuRegisters.A - tmp));
+            cpu.CpuRegisters.SetCFlag(result < 0x0100);
 
-            cpu.Registers.SetZAndNFlags(unchecked((byte) result));
+            cpu.CpuRegisters.SetZAndNFlags(unchecked((byte) result));
             return 0;
         }
     }

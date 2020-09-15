@@ -3,9 +3,9 @@ namespace Ywxt.Cens.Core.Cpu
     public sealed class Stack : IStack
     {
         private readonly IBus _bus;
-        private readonly Registers _registers;
+        private readonly CpuRegisters _registers;
 
-        public Stack(IBus bus, Registers registers)
+        public Stack(IBus bus, CpuRegisters registers)
         {
             _bus = bus;
             _registers = registers;
@@ -24,7 +24,6 @@ namespace Ywxt.Cens.Core.Cpu
             var high = (byte) ((data & 0xFF00) >> 8);
             PushByte(high);
             PushByte(low);
-            
         }
 
         public byte PopByte()

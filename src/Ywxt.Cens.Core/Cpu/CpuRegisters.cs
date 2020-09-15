@@ -1,6 +1,6 @@
 namespace Ywxt.Cens.Core.Cpu
 {
-    public class Registers
+    public class CpuRegisters
     {
         /// <summary>
         /// 累加器
@@ -26,7 +26,7 @@ namespace Ywxt.Cens.Core.Cpu
         /// 堆栈寄存器，其值为 0x00 ~ 0xFF，对应着 CPU 总线上的 0x100 ~ 0x1FF
         /// </summary>
         public byte Sp { get; set; }
-        
+
         /// <summary>
         /// 标志寄存器
         /// </summary>

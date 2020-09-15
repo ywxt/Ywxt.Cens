@@ -36,13 +36,13 @@ namespace Ywxt.Cens.Core.Test
         {
             var cpu = new Cpu.Cpu(_cartridge);
             cpu.Reset();
-            cpu.Registers.Pc = 0xC000;
+            cpu.CpuRegisters.Pc = 0xC000;
             cpu.StepBeforeEvent += (registers, stack, cycles) =>
             {
                 _testOutputHelper.WriteLine("{0:X2}  A:{1:X2} X:{2:X2} Y:{3:X2} P:{4:X2} SP:{5:X2} CYC:{6}",
                     (int) registers.Pc, (int) registers.A, (int) registers.X, (int) registers.Y, (int) registers.P,
                     (int) registers.Sp, cycles);
-                Assert.True(Check(cpu.Registers, cycles), "寄存器状态校验失败");
+                Assert.True(Check(cpu.CpuRegisters, cycles), "寄存器状态校验失败");
             };
             while (!_isEnd)
             {
@@ -50,7 +50,7 @@ namespace Ywxt.Cens.Core.Test
             }
         }
 
-        private bool Check(Registers registers, int cycle)
+        private bool Check(CpuRegisters registers, int cycle)
         {
             // 测试结束
             if (!_textLog.MoveNext())

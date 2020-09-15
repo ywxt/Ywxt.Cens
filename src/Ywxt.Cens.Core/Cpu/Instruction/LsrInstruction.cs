@@ -22,8 +22,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var @new = (byte) (data >> 1);
             this.WriteData(address, @new, cpu, instruction);
 
-            cpu.Registers.SetCFlag((old & 1) == 1);
-            cpu.Registers.SetZAndNFlags(@new);
+            cpu.CpuRegisters.SetCFlag((old & 1) == 1);
+            cpu.CpuRegisters.SetZAndNFlags(@new);
 
             return 0;
         }

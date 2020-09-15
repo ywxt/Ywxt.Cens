@@ -12,7 +12,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            cpu.Stack.PushByte((byte) (cpu.Registers.P | PFlags.U | PFlags.B));
+            cpu.Stack.PushByte((byte) (cpu.CpuRegisters.P | PFlags.U | PFlags.B));
             return 0;
         }
     }

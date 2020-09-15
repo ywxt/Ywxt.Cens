@@ -18,7 +18,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            cpu.Bus.WriteByte(address, cpu.Registers.A);
+            cpu.Bus.WriteByte(address, cpu.CpuRegisters.A);
             return 0;
         }
     }

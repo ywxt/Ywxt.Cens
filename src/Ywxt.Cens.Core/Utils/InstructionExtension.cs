@@ -32,7 +32,7 @@ namespace Ywxt.Cens.Core.Utils
             var addressingMode = AddressingModes.Get(value.mode);
             if (value.mode == AddressingMode.AccumulatorAddressingMode)
             {
-                cpu.Registers.A = data;
+                cpu.CpuRegisters.A = data;
                 return;
             }
 

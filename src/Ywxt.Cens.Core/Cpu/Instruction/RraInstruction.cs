@@ -24,18 +24,18 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         {
             // ROR
             ushort data = cpu.Bus.ReadByte(address);
-            var @new = (byte) ((data >> 1) | ((byte) (cpu.Registers.P & PFlags.C) << 7));
+            var @new = (byte) ((data >> 1) | ((byte) (cpu.CpuRegisters.P & PFlags.C) << 7));
             cpu.Bus.WriteByte(address, @new);
-            cpu.Registers.SetCFlag((data & 1) == 1);
+            cpu.CpuRegisters.SetCFlag((data & 1) == 1);
             // ADC
-            var result = cpu.Registers.A + @new + (byte) (cpu.Registers.P & PFlags.C);
-            var af = cpu.Registers.A >> 7;
+            var result = cpu.CpuRegisters.A + @new + (byte) (cpu.CpuRegisters.P & PFlags.C);
+            var af = cpu.CpuRegisters.A >> 7;
             var bf = @new >> 7;
             var cf = (result >> 7) & 1;
-            cpu.Registers.SetVFlag(af == bf && af != cf);
-            cpu.Registers.SetCFlag(((result >> 8) & 1) == 1);
-            cpu.Registers.A = unchecked((byte) result);
-            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
+            cpu.CpuRegisters.SetVFlag(af == bf && af != cf);
+            cpu.CpuRegisters.SetCFlag(((result >> 8) & 1) == 1);
+            cpu.CpuRegisters.A = unchecked((byte) result);
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.A);
             return 0;
         }
     }

@@ -19,7 +19,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             var data = this.ReadData(address, cpu, instruction);
             data--;
             cpu.Bus.WriteByte(address, data);
-            cpu.Registers.SetZAndNFlags(data);
+            cpu.CpuRegisters.SetZAndNFlags(data);
             return 0;
         }
     }

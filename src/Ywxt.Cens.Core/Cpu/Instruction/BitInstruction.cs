@@ -16,11 +16,11 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         {
             var data = this.ReadData(address, cpu, instruction);
             var value = data;
-            cpu.Registers.SetNFlag(data);
-            cpu.Registers.SetVFlag((value & 0b01000000) >> 6 == 1);
+            cpu.CpuRegisters.SetNFlag(data);
+            cpu.CpuRegisters.SetVFlag((value & 0b01000000) >> 6 == 1);
 
-            value &= cpu.Registers.A;
-            cpu.Registers.SetZFlag(value);
+            value &= cpu.CpuRegisters.A;
+            cpu.CpuRegisters.SetZFlag(value);
 
             return 0;
         }

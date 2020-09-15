@@ -21,14 +21,14 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
-            var result = cpu.Registers.A + data + (byte) (cpu.Registers.P & PFlags.C);
-            var af = cpu.Registers.A >> 7;
+            var result = cpu.CpuRegisters.A + data + (byte) (cpu.CpuRegisters.P & PFlags.C);
+            var af = cpu.CpuRegisters.A >> 7;
             var bf = data >> 7;
             var cf = (result >> 7) & 1;
-            cpu.Registers.SetVFlag(af == bf && af != cf);
-            cpu.Registers.SetCFlag(((result >> 8) & 1) == 1);
-            cpu.Registers.A = unchecked((byte) result);
-            cpu.Registers.SetZAndNFlags(cpu.Registers.A);
+            cpu.CpuRegisters.SetVFlag(af == bf && af != cf);
+            cpu.CpuRegisters.SetCFlag(((result >> 8) & 1) == 1);
+            cpu.CpuRegisters.A = unchecked((byte) result);
+            cpu.CpuRegisters.SetZAndNFlags(cpu.CpuRegisters.A);
             return 0;
         }
     }

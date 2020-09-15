@@ -2,7 +2,7 @@ namespace Ywxt.Cens.Core.Cpu
 {
     public interface ICpu
     {
-        Registers Registers { get; }
+        CpuRegisters CpuRegisters { get; }
 
         IStack Stack { get; }
 

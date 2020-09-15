@@ -16,9 +16,9 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
             var data = this.ReadData(address, cpu, instruction);
-            var result = cpu.Registers.Y - data;
-            cpu.Registers.SetZAndNFlags(unchecked((byte) result));
-            cpu.Registers.SetCFlag(result >= 0);
+            var result = cpu.CpuRegisters.Y - data;
+            cpu.CpuRegisters.SetZAndNFlags(unchecked((byte) result));
+            cpu.CpuRegisters.SetCFlag(result >= 0);
 
             return 0;
         }

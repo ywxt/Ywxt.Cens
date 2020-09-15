@@ -4,13 +4,13 @@ namespace Ywxt.Cens.Core.Utils
 {
     public static class RegisterExtension
     {
-        public static void SetZAndNFlags(this Registers registers, byte flag)
+        public static void SetZAndNFlags(this CpuRegisters registers, byte flag)
         {
             registers.SetZFlag(flag);
             registers.SetNFlag(flag);
         }
 
-        public static void SetZFlag(this Registers registers, byte flag)
+        public static void SetZFlag(this CpuRegisters registers, byte flag)
         {
             if (flag == 0)
             {
@@ -22,7 +22,7 @@ namespace Ywxt.Cens.Core.Utils
             }
         }
 
-        public static void SetNFlag(this Registers registers, byte flag)
+        public static void SetNFlag(this CpuRegisters registers, byte flag)
         {
             if (flag >> 7 == 1)
             {
@@ -35,7 +35,7 @@ namespace Ywxt.Cens.Core.Utils
         }
 
 
-        public static void SetCFlag(this Registers registers, bool value)
+        public static void SetCFlag(this CpuRegisters registers, bool value)
         {
             if (value)
             {
@@ -47,7 +47,7 @@ namespace Ywxt.Cens.Core.Utils
             }
         }
 
-        public static void SetVFlag(this Registers registers, bool value)
+        public static void SetVFlag(this CpuRegisters registers, bool value)
         {
             if (value)
             {

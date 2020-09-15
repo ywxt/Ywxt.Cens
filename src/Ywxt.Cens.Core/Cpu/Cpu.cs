@@ -16,10 +16,10 @@ namespace Ywxt.Cens.Core.Cpu
         private int _cycles = 0;
 
 #if DEBUG
-        internal event Action<Registers, IStack, int>? StepBeforeEvent;
+        internal event Action<CpuRegisters, IStack, int>? StepBeforeEvent;
 #endif
 
-        public Registers Registers { get; } = new Registers();
+        public CpuRegisters CpuRegisters { get; } = new CpuRegisters();
 
         public IStack Stack { get; }
 
@@ -28,7 +28,7 @@ namespace Ywxt.Cens.Core.Cpu
         public Cpu(Cartridge cartridge)
         {
             Bus = new CpuBus(cartridge);
-            Stack = new Stack(Bus, Registers);
+            Stack = new Stack(Bus, CpuRegisters);
         }
 
         public void Clock()
@@ -37,7 +37,7 @@ namespace Ywxt.Cens.Core.Cpu
             {
 #if DEBUG
 
-                OnStepBeforeEvent(Registers, Stack, _cycles);
+                OnStepBeforeEvent(CpuRegisters, Stack, _cycles);
 #endif
                 Step();
             }
@@ -48,47 +48,47 @@ namespace Ywxt.Cens.Core.Cpu
 
         public void Reset()
         {
-            Registers.A = 0;
-            Registers.X = 0;
-            Registers.Y = 0;
-            Registers.P = PFlags.U | PFlags.I;
-            Registers.Sp = 0xFD;
-            Registers.Pc = Bus.ReadWord(ResetVector);
+            CpuRegisters.A = 0;
+            CpuRegisters.X = 0;
+            CpuRegisters.Y = 0;
+            CpuRegisters.P = PFlags.U | PFlags.I;
+            CpuRegisters.Sp = 0xFD;
+            CpuRegisters.Pc = Bus.ReadWord(ResetVector);
             _deferCycles = 7;
         }
 
         public void Nmi()
         {
-            Stack.PushWord(Registers.Pc);
-            Stack.PushByte((byte) ((Registers.P | PFlags.U) & ~PFlags.B));
-            Registers.P |= PFlags.I;
-            Registers.Pc = Bus.ReadWord(NmiVector);
+            Stack.PushWord(CpuRegisters.Pc);
+            Stack.PushByte((byte) ((CpuRegisters.P | PFlags.U) & ~PFlags.B));
+            CpuRegisters.P |= PFlags.I;
+            CpuRegisters.Pc = Bus.ReadWord(NmiVector);
             _deferCycles += 7;
         }
 
         public void Irq()
         {
-            if (Registers.P.HasFlag(PFlags.I))
+            if (CpuRegisters.P.HasFlag(PFlags.I))
             {
                 return;
             }
 
-            Stack.PushWord(Registers.Pc);
-            Stack.PushByte((byte) ((Registers.P | PFlags.U) & ~PFlags.B));
-            Registers.P |= PFlags.I;
-            Registers.Pc = Bus.ReadWord(IrqOrBrkVector);
+            Stack.PushWord(CpuRegisters.Pc);
+            Stack.PushByte((byte) ((CpuRegisters.P | PFlags.U) & ~PFlags.B));
+            CpuRegisters.P |= PFlags.I;
+            CpuRegisters.Pc = Bus.ReadWord(IrqOrBrkVector);
             _deferCycles += 7;
         }
 
 
         private void Step()
         {
-            var op = Bus.ReadByte(Registers.Pc++);
+            var op = Bus.ReadByte(CpuRegisters.Pc++);
             var cycle = _processor.Process(this, op);
             _deferCycles += cycle;
         }
 
-        private void OnStepBeforeEvent(Registers registers, IStack stack, int cycles)
+        private void OnStepBeforeEvent(CpuRegisters registers, IStack stack, int cycles)
         {
             StepBeforeEvent?.Invoke(registers, stack, cycles);
         }

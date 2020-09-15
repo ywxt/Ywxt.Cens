@@ -12,8 +12,8 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            cpu.Stack.PushWord((ushort) (cpu.Registers.Pc - 1));
-            cpu.Registers.Pc = address;
+            cpu.Stack.PushWord((ushort) (cpu.CpuRegisters.Pc - 1));
+            cpu.CpuRegisters.Pc = address;
             return 0;
         }
     }

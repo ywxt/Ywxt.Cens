@@ -14,10 +14,10 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
 
         public int Invoke(ICpu cpu, byte instruction, ushort address)
         {
-            var jmpSuccess = !cpu.Registers.P.HasFlag(PFlags.C);
+            var jmpSuccess = !cpu.CpuRegisters.P.HasFlag(PFlags.C);
             if (jmpSuccess)
             {
-                cpu.Registers.Pc = address;
+                cpu.CpuRegisters.Pc = address;
             }
 
             return Convert.ToInt32(jmpSuccess);

@@ -12,7 +12,7 @@ namespace Ywxt.Cens.Core.Cpu.Instruction
             if (ins is null) throw new UnknownInstructionException(instruction);
             var (mode, insType, cycles) = ins.OpCodes[instruction];
             var addrMode = AddressingModes.Get(mode);
-            var (address, pageCrossed) = addrMode.Addressing(cpu.Registers, cpu.Bus);
+            var (address, pageCrossed) = addrMode.Addressing(cpu.CpuRegisters, cpu.Bus);
             var extraCycles = ins.Invoke(cpu, instruction, address);
             var cyclesIncrement = insType switch
             {
