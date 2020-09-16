@@ -90,10 +90,35 @@ namespace Ywxt.Cens.Core.Ppu
     {
         private readonly IBus _cpuBus;
 
+        public const ushort PPUCTRL = 0x2000;
 
         public PpuRegisters(IBus cpuBus)
         {
             _cpuBus = cpuBus;
+        }
+
+        public ushort BaseNametableAddress
+        {
+            get => (_cpuBus.ReadByte(PPUCTRL) & 0b00000011) switch
+            {
+                0 => 0x2000,
+                1 => 0x2400,
+                2 => 0x2800,
+                3 => 0x2C00,
+                _ => 0x2000
+            };
+            set
+            {
+                var address = value switch
+                {
+                    0x2000 => 0,
+                    0x2400 => 1,
+                    0x2800 => 2,
+                    0x2C00 => 3,
+                    _ => 0
+                };
+                _cpuBus.WriteByte(PPUCTRL, (byte) ((_cpuBus.ReadByte(PPUCTRL) & 0b11111100) | address));
+            }
         }
     }
 }
