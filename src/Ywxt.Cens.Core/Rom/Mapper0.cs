@@ -35,11 +35,11 @@ namespace Ywxt.Cens.Core.Rom
         private bool Mirroring { get; }
 
 
-        public Mapper0(Memory<byte> prg, Memory<byte> sram, Memory<byte> chr)
+        public Mapper0(ReadOnlySpan<byte> prg, Memory<byte> sram, ReadOnlySpan<byte> chr)
         {
-            Prg = prg;
+            Prg = prg.ToArray();
             Sram = sram;
-            Chr = chr.IsEmpty ? new byte[0x2000] : Chr;
+            Chr = chr.IsEmpty ? new byte[0x2000] : Chr.ToArray();
             Mirroring = prg.Length == Header.PrgUnitSize;
         }
 
@@ -86,11 +86,13 @@ namespace Ywxt.Cens.Core.Rom
             {
                 Chr.Span[address] = data;
             }
+
             if (address >= AddressExpansionRomStart && address <= AddressExpansionRomEnd)
             {
                 // Mapper扩展，一般用不到
                 return;
             }
+
             if (address >= AddressPrgRamBankStart && address <= AddressPrgRamBankEnd)
             {
                 Sram.Span[address - AddressPrgRamBankStart] = data;

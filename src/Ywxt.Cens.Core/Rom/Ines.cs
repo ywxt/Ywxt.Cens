@@ -10,13 +10,13 @@ namespace Ywxt.Cens.Core.Rom
     {
         public Header Header { get; }
 
-        public Memory<byte> Trainer { get; }
+        public ReadOnlyMemory<byte> Trainer { get; }
 
-        public Memory<byte> Prg { get; }
+        public ReadOnlyMemory<byte> Prg { get; }
 
-        public Memory<byte> Chr { get; }
+        public ReadOnlyMemory<byte> Chr { get; }
 
-        public Ines(Memory<byte> rom)
+        public Ines(ReadOnlyMemory<byte> rom)
         {
             if (rom.Length < Header.HeaderSize)
             {
@@ -51,6 +51,7 @@ namespace Ywxt.Cens.Core.Rom
             {
                 throw new RomException("NES文件损坏");
             }
+
             Chr = rom[position..(position + Header.ChrUnitSize * Header.ChrSize)];
             // position += Header.ChrUnitSize * Header.ChrSize;
         }

@@ -22,7 +22,7 @@ namespace Ywxt.Cens.Core.Rom
 
         private IMapper GetMapper0(Ines ines, Memory<byte> sram)
         {
-            return new Mapper0(ines.Prg, sram, ines.Chr);
+            return new Mapper0(ines.Prg.Span, sram, ines.Chr.Span);
         }
     }
 }

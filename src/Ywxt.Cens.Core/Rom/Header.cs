@@ -82,12 +82,12 @@ namespace Ywxt.Cens.Core.Rom
         /// </summary>
         public byte[] Unused { get; }
 
-        public static bool IsNesRom(Span<byte> header)
+        public static bool IsNesRom(ReadOnlySpan<byte> header)
         {
             return header[..SignSize].SequenceEqual(NesSign.Span);
         }
 
-        public Header(Span<byte> header)
+        public Header(ReadOnlySpan<byte> header)
         {
             if (!IsNesRom(header))
             {
