@@ -84,12 +84,12 @@ namespace Ywxt.Cens.Core.Rom
 
         public static bool IsNesRom(Span<byte> header)
         {
-            return header.Length == HeaderSize && header[..SignSize].SequenceEqual(NesSign.Span);
+            return header[..SignSize].SequenceEqual(NesSign.Span);
         }
 
         public Header(Span<byte> header)
         {
-            if (IsNesRom(header))
+            if (!IsNesRom(header))
             {
                 throw new RomException("无效NES文件");
             }

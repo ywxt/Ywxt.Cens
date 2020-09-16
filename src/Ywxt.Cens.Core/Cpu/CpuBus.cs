@@ -9,8 +9,14 @@ namespace Ywxt.Cens.Core.Cpu
         public const ushort AddressStackEnd = 0x0200 - 1;
 
         public const ushort AddressCpuRamEnd = 0x1FFF;
+        public const ushort AddressCpuRamIndex = 0x07FF;
 
-        public const ushort AddressIoRegistersStart = 0x2000;
+
+        public const ushort AddressPpuRegistersStart = 0x2000;
+        public const ushort AddressPpuRegistersEnd = 0x3FFF;
+        public const ushort AddressPpuRegistersIndex = 0x2007;
+
+        public const ushort AddressIoRegistersStart = 0x4000;
         public const ushort AddressIoRegistersEnd = 0x401F;
 
 
@@ -31,7 +37,12 @@ namespace Ywxt.Cens.Core.Cpu
             if (address <= AddressCpuRamEnd)
             {
                 // 镜像
-                return Ram.Span[address & 0x07FF];
+                return Ram.Span[address & AddressCpuRamIndex];
+            }
+
+            if (address >= AddressPpuRegistersStart && address <= AddressPpuRegistersEnd)
+            {
+                return Ram.Span[address & AddressPpuRegistersIndex];
             }
 
             // IO 寄存器，暂不处理
@@ -48,7 +59,13 @@ namespace Ywxt.Cens.Core.Cpu
         {
             if (address <= AddressCpuRamEnd)
             {
-                Ram.Span[address & 0x07FF] = data;
+                Ram.Span[address & AddressCpuRamIndex] = data;
+                return;
+            }
+
+            if (address >= AddressPpuRegistersStart && address <= AddressPpuRegistersEnd)
+            {
+                Ram.Span[address & AddressPpuRegistersIndex] = data;
                 return;
             }
 
