@@ -1,4 +1,5 @@
 ﻿using Ywxt.Cens.Core.Cpu;
+using Ywxt.Cens.Core.Rom;
 
 namespace Ywxt.Cens.Core.Ppu
 {
@@ -14,7 +15,7 @@ namespace Ywxt.Cens.Core.Ppu
     /// <term> Notes
     /// </term></listheader>
     /// <item>
-    /// <term> PPUCTRL
+    /// <term> PpuCtrl
     /// </term>
     /// <term> $2000
     /// </term>
@@ -90,7 +91,15 @@ namespace Ywxt.Cens.Core.Ppu
     {
         private readonly IBus _cpuBus;
 
-        public const ushort PPUCTRL = 0x2000;
+        public const ushort PpuCtrl = 0x2000;
+        public const ushort PpuMask = 0x2001;
+        public const ushort PpuStatus = 0x2002;
+        public const ushort OamAddr = 0x2003;
+        public const ushort OamData = 0x2004;
+        public const ushort PpuScroll = 0x2005;
+        public const ushort PpuAddr = 0x2006;
+        public const ushort PpuData = 0x2007;
+        public const ushort OamDma = 0x4014;
 
         public PpuRegisters(IBus cpuBus)
         {
@@ -99,14 +108,6 @@ namespace Ywxt.Cens.Core.Ppu
 
         public ushort BaseNametableAddress
         {
-            get => (_cpuBus.ReadByte(PPUCTRL) & 0b00000011) switch
-            {
-                0 => 0x2000,
-                1 => 0x2400,
-                2 => 0x2800,
-                3 => 0x2C00,
-                _ => 0x2000
-            };
             set
             {
                 var address = value switch
@@ -117,8 +118,21 @@ namespace Ywxt.Cens.Core.Ppu
                     0x2C00 => 3,
                     _ => 0
                 };
-                _cpuBus.WriteByte(PPUCTRL, (byte) ((_cpuBus.ReadByte(PPUCTRL) & 0b11111100) | address));
+                _cpuBus.WriteByte(PpuCtrl, (byte) ((_cpuBus.ReadByte(PpuCtrl) & 0b11111100) | address));
             }
+        }
+
+
+        public CtrlFlags CtrlFlags
+        {
+            get => (CtrlFlags) _cpuBus.ReadByte(PpuCtrl);
+            set => _cpuBus.WriteByte(PpuCtrl, (byte) value);
+        }
+
+        public MaskFlags MaskFlags
+        {
+            get => (MaskFlags) _cpuBus.ReadByte(PpuMask);
+            set => _cpuBus.WriteByte(PpuMask, (byte) value);
         }
     }
 }
